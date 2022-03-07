@@ -7,11 +7,12 @@ const coordinates = {
   lon: 5.33,
 }
 
-const yrUrl: string = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${coordinates.lat}&lon=${coordinates.lon}`
+const yrUrl = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${coordinates.lat}&lon=${coordinates.lon}`
 
 const response: YrWeather = await fetchYr(yrUrl)
 
-console.log(currentWeather(response))
-
-console.table(upcomingForecast(response))
-
+if (Deno.args && Deno.args.includes('-c')) {
+  console.log(currentWeather(response))
+} else if (Deno.args && Deno.args.includes('-f')) {
+  console.table(upcomingForecast(response))
+}

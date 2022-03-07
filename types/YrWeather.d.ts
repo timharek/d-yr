@@ -1,4 +1,4 @@
-import { Timeseries } from "./Timeseries.d.ts"
+import { Timeseries } from './Timeseries.d.ts'
 
 export type YrWeather = {
   type: string

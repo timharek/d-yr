@@ -1,12 +1,12 @@
-import { format as formatDate } from "https://deno.land/std@0.128.0/datetime/mod.ts"
-import { Timeseries, TimeseriesSimple } from "../types/Timeseries.d.ts"
-import { YrWeather } from "../types/YrWeather.d.ts"
+import { format as formatDate } from 'https://deno.land/std@0.128.0/datetime/mod.ts'
+import { Timeseries, TimeseriesSimple } from '../types/Timeseries.d.ts'
+import { YrWeather } from '../types/YrWeather.d.ts'
 
 export async function fetchYr(url: string) {
   const result = await fetch(url, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
     },
   })
     .then((response) => response.json())
@@ -27,7 +27,9 @@ export function currentWeather(weatherData: YrWeather) {
     datetime: `${closestTimeseries.time}`,
     symbol: closestTimeseries.data.next_1_hours.summary.symbol_code,
     wind_speed: `${closestTimeseries.data.instant.details.wind_speed} ${units.wind_speed}`,
-    temperature: `${ closestTimeseries.data.instant.details.air_temperature } ${units.air_temperature}`,
+    temperature: `${
+      closestTimeseries.data.instant.details.air_temperature
+    } ${units.air_temperature[0].toUpperCase()}`,
     wind_direction: closestTimeseries.data.instant.details.wind_from_direction,
     rain: `${closestTimeseries.data.next_1_hours.details.precipitation_amount} ${units.precipitation_amount}`,
   } as TimeseriesSimple
@@ -55,11 +57,13 @@ export function upcomingForecast(
   const result = weatherData.properties.timeseries.map((entry) => {
     if (entry.time != closest.time && entry?.data?.next_1_hours) {
       return {
-        datetime: `${formatDate(new Date(entry.time), "yyyy-MM-dd HH:mm")}`,
+        datetime: `${formatDate(new Date(entry.time), 'yyyy-MM-dd HH:mm')}`,
         symbol: entry.data.next_1_hours.summary.symbol_code,
         wind_speed: `${entry.data.instant.details.wind_speed} ${units.wind_speed}`,
         wind_direction: entry.data.instant.details.wind_from_direction,
-        temperature: `${entry.data.instant.details.air_temperature} ${units.air_temperature}`,
+        temperature: `${
+          entry.data.instant.details.air_temperature
+        } ${units.air_temperature[0].toUpperCase()}`,
         rain: `${entry.data.next_1_hours.details.precipitation_amount} ${units.precipitation_amount}`,
       } as TimeseriesSimple
     }
@@ -71,6 +75,8 @@ export function upcomingForecast(
 /**
  * Removes undefined from arrays
  */
-function cleanForecast(input: any) {
+// deno-lint-ignore no-explicit-any
+function cleanForecast(input: Array<any>) {
+  // deno-lint-ignore no-explicit-any
   return input.filter((entry: any) => entry != undefined)
 }
