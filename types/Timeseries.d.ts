@@ -1,5 +1,5 @@
 export type Timeseries = {
-  time: Date
+  time: string
   data: {
     instant: {
       details: {
@@ -36,9 +36,10 @@ export type Timeseries = {
 }
 
 export type TimeseriesSimple = {
-  datetime: Date
+  datetime: string
   symbol: string
-  wind_speed: number
-  temperature: number
+  wind_speed: string
+  temperature: string
   wind_direction: number
+  rain: string
 }
