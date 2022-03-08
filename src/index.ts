@@ -24,7 +24,7 @@ export function currentWeather(weatherData: YrWeather) {
   )
 
   return {
-    datetime: `${closestTimeseries.time}`,
+    datetime: `${formatDate(new Date(closestTimeseries.time), 'HH:mm')}`,
     symbol: closestTimeseries.data.next_1_hours.summary.symbol_code,
     wind_speed: `${closestTimeseries.data.instant.details.wind_speed} ${units.wind_speed}`,
     temperature: `${
