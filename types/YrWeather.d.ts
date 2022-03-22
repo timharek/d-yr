@@ -1,6 +1,6 @@
 import { Timeseries } from './Timeseries.d.ts'
 
-export type YrWeather = {
+export interface YrWeather {
   type: string
   geometry: {
     type: string
