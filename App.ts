@@ -1,4 +1,4 @@
-import { fetchYr, currentWeather, upcomingForecast } from './src/index.ts'
+import { fetchYr, currentWeather, upcomingForecast } from './src/Yr.ts'
 import { YrWeather } from './types/YrWeather.d.ts'
 import { Config } from './types/Config.d.ts'
 
