@@ -1,11 +1,11 @@
 import { Config } from '../types/Config.d.ts';
 
 const HOME_PATH = Deno.env.get('HOME');
-const CONFIG_FILE_PATH = `${HOME_PATH}/.config/yr/config.json`;
+export const CONFIG_FILE_PATH = `${HOME_PATH}/.config/yr/config.json`;
 
-export async function getConfig(): Promise<Config> {
+export async function getConfig(customPath?: string): Promise<Config> {
 	try {
-		return JSON.parse(await Deno.readTextFile(CONFIG_FILE_PATH));
+		return JSON.parse(await Deno.readTextFile(customPath ?? CONFIG_FILE_PATH));
 	} catch (error) {
 		console.error(error);
 		console.warn('No config is present.');

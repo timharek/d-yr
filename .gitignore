@@ -1,3 +1,4 @@
 *.bundle.js
 .vscode
 .env
+*.json
