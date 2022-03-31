@@ -16,6 +16,7 @@ const flags = parse(Deno.args, {
 if (flags.help) {
   console.log("Wants help?", flags.help)
   console.log("--help, -h\t\tBrings up this menu\n--config [path?]\tReturns config or uses config if options is specified")
+  Deno.exit(1)
 }
 
 if (flags.config && flags.lat && flags.lng) {
@@ -39,6 +40,7 @@ if (flags.config) {
 if (flags.getConfig) {
   console.log(`Config path: ${CONFIG_FILE_PATH}`)
   console.log(data.config)
+  Deno.exit(1)
 }
 
 if (data.config) {
