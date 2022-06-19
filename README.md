@@ -2,17 +2,26 @@
 
 Using the Yr.no / MET.no weather API with Deno.
 
+## Install
+
+```sh
+deno install --allow-net --allow-read --allow-env -n yr https://raw.githubusercontent.com/timharek/d-yr/main/App.ts
+```
+
+You have now installed d-yr as `yr`.
+
 ## Setup
 
-If you are missing a config-file in `$HOME/.config/yr/config.json`, 
-it will ask if you want to create one, and fail if you say no.
+If you are missing a config-file in `$HOME/.config/yr/config.json`, it will ask
+if you want to create one, and fail if you say no.
 
 Run the project with:
+
 ```sh
 # For full forcast
-deno run --allow-net --allow-read --allow-write --allow-env App.ts -f 
+yr -f
 # OR for current
-deno run --allow-net --allow-read --allow-write --allow-env App.ts -c
+yr -c
 ```
 
 ## Work in progress
