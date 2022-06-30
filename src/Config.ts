@@ -67,18 +67,15 @@ export const CONFIG: Options = {
     },
     {
       name: 'getConfig',
-      aliases: [],
       description: 'Return the contents of the config-file.',
     },
     {
       name: 'lat',
-      aliases: [],
       description:
         'Latitude, used in conjuction with longitude (--lng) in order to get forecast for a location not specified in your config.',
     },
     {
       name: 'lng',
-      aliases: [],
       description:
         'Longitude, used in conjuction with latitude (--lat) in order to get forecast for a location not specified in your config.',
     },
