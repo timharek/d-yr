@@ -5,7 +5,7 @@ Using the Yr.no / MET.no weather API with Deno.
 ## Install
 
 ```sh
-deno install --allow-net --allow-read --allow-env -n yr https://raw.githubusercontent.com/timharek/d-yr/main/App.ts
+deno install --allow-net --allow-read --allow-env -n yr https://raw.githubusercontent.com/timharek/d-yr/main/main.ts
 ```
 
 You have now installed d-yr as `yr`.
