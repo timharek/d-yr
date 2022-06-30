@@ -1,5 +1,5 @@
-import { Config } from '../types/Config.d.ts';
-import { Options, parse } from '../deps.ts';
+import { Config } from './types.d.ts';
+import { Options, parse } from './deps.ts';
 
 const HOME_PATH = Deno.env.get('HOME');
 export const CONFIG_FILE_PATH = `${HOME_PATH}/.config/yr/config.json`;

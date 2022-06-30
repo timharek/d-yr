@@ -1,3 +1,15 @@
+export interface Config {
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+}
+
+export interface Data {
+  config?: Config;
+  response?: YrWeather;
+}
+
 export type Timeseries = {
   time: string;
   data: {
@@ -43,3 +55,26 @@ export type TimeseriesSimple = {
   wind_direction: number;
   rain: string;
 };
+
+export interface YrWeather {
+  type: string;
+  geometry: {
+    type: string;
+    coordinates: Array<number>;
+  };
+  properties: {
+    meta: {
+      updated_at: Date;
+      units: {
+        air_pressure_at_sea_level: string;
+        air_temperature: string;
+        cloud_area_fraction: string;
+        precipitation_amount: string;
+        relative_humidity: string;
+        wind_from_direction: string;
+        wind_speed: string;
+      };
+    };
+    timeseries: Array<Timeseries>;
+  };
+}

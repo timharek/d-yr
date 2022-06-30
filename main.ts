@@ -1,6 +1,6 @@
-import { currentWeather, fetchYr, upcomingForecast } from './src/Yr.ts';
-import { Data } from './types/Config.d.ts';
-import { CONFIG, CONFIG_FILE_PATH, FLAGS, getConfig } from './src/Config.ts';
+import { currentWeather, fetchYr, upcomingForecast } from './yr.ts';
+import { Data } from './types.d.ts';
+import { CONFIG, CONFIG_FILE_PATH, FLAGS, getConfig } from './config.ts';
 import { printHelp } from './deps.ts';
 
 const data: Data = {
