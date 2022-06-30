@@ -1,41 +1,41 @@
 import { Config } from '../types/Config.d.ts';
-import { parse, Options } from '../deps.ts'
+import { Options, parse } from '../deps.ts';
 
 const HOME_PATH = Deno.env.get('HOME');
 export const CONFIG_FILE_PATH = `${HOME_PATH}/.config/yr/config.json`;
 
 export async function getConfig(customPath?: string): Promise<Config> {
-	try {
-		return JSON.parse(await Deno.readTextFile(customPath ?? CONFIG_FILE_PATH));
-	} catch (error) {
-		console.error(error);
-		console.warn('No config is present.');
-		const wantsNewConfig = confirm('Do you me to create one?');
-		if (wantsNewConfig) {
-			const lat = prompt('What is the latitude for your coordinates?');
-			const lng = prompt('What is the longitude for your coordinates?');
+  try {
+    return JSON.parse(await Deno.readTextFile(customPath ?? CONFIG_FILE_PATH));
+  } catch (error) {
+    console.error(error);
+    console.warn('No config is present.');
+    const wantsNewConfig = confirm('Do you me to create one?');
+    if (wantsNewConfig) {
+      const lat = prompt('What is the latitude for your coordinates?');
+      const lng = prompt('What is the longitude for your coordinates?');
 
-			return generateConfigFile(lat, lng);
-		}
+      return generateConfigFile(lat, lng);
+    }
 
-		throw new Error('Missing config file');
-	}
+    throw new Error('Missing config file');
+  }
 }
 
 async function generateConfigFile(
-	lat: string | null,
-	lng: string | null,
+  lat: string | null,
+  lng: string | null,
 ): Promise<Config> {
-	const config: Config = {
-		coordinates: {
-			lat: Number(lat),
-			lng: Number(lng),
-		},
-	};
+  const config: Config = {
+    coordinates: {
+      lat: Number(lat),
+      lng: Number(lng),
+    },
+  };
 
-	await Deno.writeTextFileSync(CONFIG_FILE_PATH, JSON.stringify(config));
+  await Deno.writeTextFileSync(CONFIG_FILE_PATH, JSON.stringify(config));
 
-	return config;
+  return config;
 }
 
 export const CONFIG: Options = {
@@ -68,8 +68,7 @@ export const CONFIG: Options = {
     {
       name: 'getConfig',
       aliases: [],
-      description:
-        'Return the contents of the config-file.',
+      description: 'Return the contents of the config-file.',
     },
     {
       name: 'lat',
@@ -91,9 +90,8 @@ export const CONFIG: Options = {
   ],
 };
 
-
 export const FLAGS = parse(Deno.args, {
-  boolean: ["help", "getConfig", "current", "forecast"],
-  string: ["lat", "lng"],
-  alias: { "current": ["c"], "forecast": ["f"], "help": ["h"] }
-})
+  boolean: ['help', 'getConfig', 'current', 'forecast'],
+  string: ['lat', 'lng'],
+  alias: { 'current': ['c'], 'forecast': ['f'], 'help': ['h'] },
+});
