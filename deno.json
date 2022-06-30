@@ -1,26 +1,27 @@
 {
-  "compilerOptions": {
-    "allowJs": false,
-    "strict": true
-  },
   "lint": {
     "files": {
       "include": ["src/", "types/"]
     },
     "rules": {
-      "tags": ["recommended"],
+      "tags": ["recommended"]
     }
   },
   "fmt": {
     "files": {
-      "include": ["src/", "types/"]
+      "include": ["./"]
     },
     "options": {
-      "useTabs": true,
+      "useTabs": false,
       "lineWidth": 80,
       "indentWidth": 2,
       "singleQuote": true,
       "proseWrap": "preserve"
     }
+  },
+
+  "tasks": {
+    "run": "deno run --allow-net --allow-read --allow-env main.ts"
   }
 }
+
