@@ -1,5 +1,5 @@
-import { format as formatDate } from './deps.ts';
-import { Timeseries, TimeseriesSimple, YrWeather } from './types.d.ts';
+// @deno-types='../mod.d.ts'
+import { format as formatDate } from '../deps.ts';
 
 export async function fetchYr(url: string) {
   const result = await fetch(url, {

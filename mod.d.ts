@@ -1,16 +1,16 @@
-export interface Config {
+interface Config {
   coordinates: {
     lat: number;
     lng: number;
   };
 }
 
-export interface Data {
+interface Data {
   config?: Config;
   response?: YrWeather;
 }
 
-export type Timeseries = {
+interface Timeseries {
   time: string;
   data: {
     instant: {
@@ -45,18 +45,18 @@ export type Timeseries = {
       };
     };
   };
-};
+}
 
-export type TimeseriesSimple = {
+interface TimeseriesSimple {
   datetime: string;
   symbol: string;
   wind_speed: string;
   temperature: string;
   wind_direction: number;
   rain: string;
-};
+}
 
-export interface YrWeather {
+interface YrWeather {
   type: string;
   geometry: {
     type: string;
