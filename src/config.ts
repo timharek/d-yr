@@ -1,5 +1,5 @@
 // @deno-types='../mod.d.ts'
-import { Options, parse, CONFIG_FILE_PATH } from '../deps.ts';
+import { CONFIG_FILE_PATH } from '../deps.ts';
 
 export async function getConfig(customPath?: string): Promise<Config> {
   try {
@@ -34,58 +34,3 @@ async function generateConfigFile(
 
   return config;
 }
-
-export const CONFIG: Options = {
-  name: 'yr',
-  version: '1.0.1',
-  description: 'Get weather data from Yr using Deno.',
-  author: [{ name: 'Tim Hårek Andreassen', email: 'tim@harek.no' }],
-  source: 'https://github.com/timharek/d-yr',
-  flags: [
-    {
-      name: 'version',
-      aliases: ['V'],
-      description: 'Prints version.',
-    },
-    {
-      name: 'help',
-      aliases: ['h'],
-      description: 'Prints this help message.',
-    },
-    {
-      name: 'current',
-      aliases: ['c'],
-      description: 'Return the current weather forecast.',
-    },
-    {
-      name: 'forecast',
-      aliases: ['l'],
-      description: 'Return the forecast in a table.',
-    },
-    {
-      name: 'getConfig',
-      description: 'Return the contents of the config-file.',
-    },
-    {
-      name: 'lat',
-      description:
-        'Latitude, used in conjuction with longitude (--lng) in order to get forecast for a location not specified in your config.',
-    },
-    {
-      name: 'lng',
-      description:
-        'Longitude, used in conjuction with latitude (--lat) in order to get forecast for a location not specified in your config.',
-    },
-  ],
-  examples: [
-    'yr -c',
-    'yr -f',
-    'yr --lat 5.33 --lng 5.33',
-  ],
-};
-
-export const FLAGS = parse(Deno.args, {
-  boolean: ['help', 'getConfig', 'current', 'forecast'],
-  string: ['lat', 'lng'],
-  alias: { 'current': ['c'], 'forecast': ['f'], 'help': ['h'] },
-});
