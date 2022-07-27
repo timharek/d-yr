@@ -1,7 +1,8 @@
 // @deno-types='../mod.d.ts'
 import { format as formatDate } from '../deps.ts';
+import { getNameFromCoordinates } from './nominatim.ts';
 
-export async function fetchYr(url: string) {
+export async function _fetch(url: string | URL) {
   const result = await fetch(url, {
     method: 'GET',
     headers: {
@@ -16,13 +17,13 @@ export async function fetchYr(url: string) {
   return result;
 }
 
-export function currentWeather(weatherData: YrWeather) {
+export async function currentWeather(weatherData: YrWeather) {
   const units = weatherData.properties.meta.units;
   const closestTimeseries: Timeseries = getClosestTimeseries(
     weatherData.properties.timeseries,
   );
 
-  return {
+  const result = {
     datetime: `${formatDate(new Date(closestTimeseries.time), 'HH:mm')}`,
     symbol: closestTimeseries.data.next_1_hours.summary.symbol_code,
     wind_speed:
@@ -34,6 +35,14 @@ export function currentWeather(weatherData: YrWeather) {
     rain:
       `${closestTimeseries.data.next_1_hours.details.precipitation_amount} ${units.precipitation_amount}`,
   } as TimeseriesSimple;
+
+  const lng = weatherData.geometry.coordinates[0];
+  const lat = weatherData.geometry.coordinates[1];
+
+  return {
+    location_name: await getNameFromCoordinates(lat, lng),
+    ...result,
+  };
 }
 
 export function getClosestTimeseries(
@@ -49,9 +58,9 @@ export function getClosestTimeseries(
   );
 }
 
-export function upcomingForecast(
+export async function upcomingForecast(
   weatherData: YrWeather,
-): Array<TimeseriesSimple | undefined> {
+) {
   const units = weatherData.properties.meta.units;
   const closest = getClosestTimeseries(weatherData.properties.timeseries);
 
@@ -72,7 +81,13 @@ export function upcomingForecast(
     }
   });
 
-  return cleanForecast(result);
+  const lng = weatherData.geometry.coordinates[0];
+  const lat = weatherData.geometry.coordinates[1];
+
+  return {
+    location_name: await getNameFromCoordinates(lat, lng),
+    array: cleanForecast(result),
+  };
 }
 
 /**
