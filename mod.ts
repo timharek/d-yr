@@ -43,7 +43,7 @@ async function getResponse(options, name: string) {
 
 await new Command()
   .name('yr')
-  .version('1.1.1')
+  .version('1.1.2')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
@@ -85,6 +85,8 @@ await new Command()
   .command(
   "upgrade",
   new UpgradeCommand({
+    main: "mod.ts",
+    args: ["--allow-net", "--allow-read", "--allow-env"],
     provider: [
       new GithubProvider({ repository: "timharek/d-yr" }),
     ],
