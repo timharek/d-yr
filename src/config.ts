@@ -1,8 +1,5 @@
-import { Config } from './types.d.ts';
-import { Options, parse } from './deps.ts';
-
-const HOME_PATH = Deno.env.get('HOME');
-export const CONFIG_FILE_PATH = `${HOME_PATH}/.config/yr/config.json`;
+// @deno-types='../mod.d.ts'
+import { Options, parse, CONFIG_FILE_PATH } from '../deps.ts';
 
 export async function getConfig(customPath?: string): Promise<Config> {
   try {

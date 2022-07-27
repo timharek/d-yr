@@ -1,7 +1,7 @@
 // @deno-types='./mod.d.ts'
-import { currentWeather, fetchYr, upcomingForecast } from './yr.ts';
-import { CONFIG, CONFIG_FILE_PATH, FLAGS, getConfig } from './config.ts';
-import { printHelp } from './deps.ts';
+import { currentWeather, fetchYr, upcomingForecast } from './src/yr.ts';
+import { CONFIG, FLAGS, getConfig } from './src/config.ts';
+import { printHelp, CONFIG_FILE_PATH } from './deps.ts';
 
 const data: Data = {
   config: await getConfig().then((res) => res),
