@@ -1,5 +1,5 @@
+// @deno-types='./mod.d.ts'
 import { currentWeather, fetchYr, upcomingForecast } from './yr.ts';
-import { Data } from './types.d.ts';
 import { CONFIG, CONFIG_FILE_PATH, FLAGS, getConfig } from './config.ts';
 import { printHelp } from './deps.ts';
 
