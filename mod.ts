@@ -2,7 +2,7 @@
 import { getCoordinatesFromName } from './src/nominatim.ts';
 import { _fetch, currentWeather, upcomingForecast } from './src/yr.ts';
 import { getConfig } from './src/config.ts';
-import { Command } from './deps.ts';
+import { Command, UpgradeCommand, GithubProvider } from './deps.ts';
 
 const data: Data = {
   config: await getConfig().then((res) => res),
@@ -43,7 +43,7 @@ async function getResponse(options, name: string) {
 
 await new Command()
   .name('yr')
-  .version('1.1.0')
+  .version('1.1.1')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
@@ -82,4 +82,12 @@ await new Command()
       }
     },
   )
+  .command(
+  "upgrade",
+  new UpgradeCommand({
+    provider: [
+      new GithubProvider({ repository: "timharek/d-yr" }),
+    ],
+  }),
+)
   .parse(Deno.args);
