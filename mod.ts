@@ -1,5 +1,6 @@
 // @deno-types='./mod.d.ts'
-import { currentWeather, fetchYr, upcomingForecast } from './src/yr.ts';
+import { getCoordinatesFromName } from './src/nominatim.ts';
+import { _fetch, currentWeather, upcomingForecast } from './src/yr.ts';
 import { getConfig } from './src/config.ts';
 import { Command } from './deps.ts';
 
@@ -17,11 +18,26 @@ function getUrl(lat?: number, lng?: number) {
     };
   }
 
-  if (data.config) {
-    const coordinates = data.config.coordinates;
-    const yrUrl =
-      `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${coordinates.lat}&lon=${coordinates.lng}`;
-    return yrUrl;
+  if (!data.config) {
+    return null;
+  }
+  const coordinates = data.config.coordinates;
+  const yrUrl =
+    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${coordinates.lat}&lon=${coordinates.lng}`;
+  return yrUrl;
+}
+
+async function getResponse(options, name: string) {
+  if (name) {
+    const coordinatesFromName = await getCoordinatesFromName(name);
+    options.lat = coordinatesFromName.lat;
+    options.lng = coordinatesFromName.lng;
+  }
+
+  const url = getUrl(options.lat, options.lng);
+
+  if (url) {
+    data.response = await _fetch(url);
   }
 }
 
@@ -38,29 +54,31 @@ await new Command()
   .globalOption('-v, --verbose [value:boolean]', 'A more verbose output.', {
     default: false,
   })
-  .option('--lat <lat:number>', 'Location latitude.')
-  .option('--lng <lng:number>', 'Location longitude.')
-  .option('-c, --current [value:boolean]', 'Return current weather forecast.', {
-    default: false,
-  })
-  .option(
-    '-f, --forecast [value:boolean]',
-    'Return upcoming weather forecast in a table.',
-    { default: false },
-  )
+  .globalOption('--lat <lat:number>', 'Location latitude.')
+  .globalOption('--lng <lng:number>', 'Location longitude.')
+  .command('current [name:string]', 'Return current weather forecast.')
   .action(
     async (
       options,
+      name,
     ) => {
-      const url = getUrl(options.lat, options.lng);
+      await getResponse(options, name);
 
-      data.response = await fetchYr(url);
-
-      if (options.current) {
-        console.log(currentWeather(data.response));
+      if (data.response) {
+        console.log(await currentWeather(data.response));
       }
-      if (options.forecast) {
-        console.log(upcomingForecast(data.response));
+    },
+  )
+  .command('forecast [name:string]', 'Return current weather forecast.')
+  .action(
+    async (
+      options,
+      name,
+    ) => {
+      await getResponse(options, name);
+
+      if (data.response) {
+        console.log(await upcomingForecast(data.response));
       }
     },
   )

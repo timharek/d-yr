@@ -18,12 +18,10 @@ if you want to create one, and fail if you say no.
 Run the project with:
 
 ```sh
-# For full forcast
-yr -f
-# OR for current
-yr -c
+# Current weather forecast for location
+yr current Bergen
+# OR forecast for location
+yr forecast Bangkok
+# Forecast with coordinates
+yr forecast --lat=-34.44076 --lng=-58.70521
 ```
-
-## Work in progress
-
-This is one of my first projects with Deno.
