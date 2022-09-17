@@ -43,7 +43,7 @@ async function getResponse(options, name: string) {
 
 await new Command()
   .name('yr')
-  .version('1.1.2')
+  .version('v1.1.3')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
@@ -56,7 +56,7 @@ await new Command()
   })
   .globalOption('--lat <lat:number>', 'Location latitude.')
   .globalOption('--lng <lng:number>', 'Location longitude.')
-  .command('current [name:string]', 'Return current weather forecast.')
+  .command('current <name:string>', 'Return current weather forecast.')
   .action(
     async (
       options,
@@ -69,16 +69,17 @@ await new Command()
       }
     },
   )
-  .command('forecast [name:string]', 'Return current weather forecast.')
+  .command('forecast <name:string> [interval:number]', 'Return current weather forecast.')
   .action(
     async (
       options,
       name,
+      interval
     ) => {
       await getResponse(options, name);
 
       if (data.response) {
-        console.log(await upcomingForecast(data.response));
+        console.log(await upcomingForecast(data.response, interval));
       }
     },
   )

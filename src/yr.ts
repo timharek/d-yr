@@ -60,6 +60,7 @@ export function getClosestTimeseries(
 
 export async function upcomingForecast(
   weatherData: YrWeather,
+  interval: number
 ) {
   const units = weatherData.properties.meta.units;
   const closest = getClosestTimeseries(weatherData.properties.timeseries);
@@ -84,9 +85,11 @@ export async function upcomingForecast(
   const lng = weatherData.geometry.coordinates[0];
   const lat = weatherData.geometry.coordinates[1];
 
+  const array = interval ? cleanForecast(result).slice(0, interval) : cleanForecast(result)
+
   return {
     location_name: await getNameFromCoordinates(lat, lng),
-    array: cleanForecast(result),
+    array,
   };
 }
 
