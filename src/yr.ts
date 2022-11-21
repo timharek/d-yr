@@ -17,13 +17,17 @@ export async function _fetch(url: string | URL) {
   return result;
 }
 
-export async function currentWeather(weatherData: YrWeather) {
+export async function currentWeather(weatherData: YrWeather, verbose: number) {
   const units = weatherData.properties.meta.units;
   const closestTimeseries: Timeseries = getClosestTimeseries(
     weatherData.properties.timeseries,
   );
 
+  const lng = weatherData.geometry.coordinates[0];
+  const lat = weatherData.geometry.coordinates[1];
+
   const result = {
+    location_name: await getNameFromCoordinates(lat, lng),
     datetime: `${formatDate(new Date(closestTimeseries.time), 'HH:mm')}`,
     symbol: closestTimeseries.data.next_1_hours.summary.symbol_code,
     wind_speed:
@@ -36,13 +40,7 @@ export async function currentWeather(weatherData: YrWeather) {
       `${closestTimeseries.data.next_1_hours.details.precipitation_amount} ${units.precipitation_amount}`,
   } as TimeseriesSimple;
 
-  const lng = weatherData.geometry.coordinates[0];
-  const lat = weatherData.geometry.coordinates[1];
-
-  return {
-    location_name: await getNameFromCoordinates(lat, lng),
-    ...result,
-  };
+  return getVerboseMessage(result, verbose)
 }
 
 export function getClosestTimeseries(
@@ -60,7 +58,7 @@ export function getClosestTimeseries(
 
 export async function upcomingForecast(
   weatherData: YrWeather,
-  interval: number
+  interval: number,
 ) {
   const units = weatherData.properties.meta.units;
   const closest = getClosestTimeseries(weatherData.properties.timeseries);
@@ -85,12 +83,36 @@ export async function upcomingForecast(
   const lng = weatherData.geometry.coordinates[0];
   const lat = weatherData.geometry.coordinates[1];
 
-  const array = interval ? cleanForecast(result).slice(0, interval) : cleanForecast(result)
+  const array = interval
+    ? cleanForecast(result).slice(0, interval)
+    : cleanForecast(result);
 
   return {
     location_name: await getNameFromCoordinates(lat, lng),
     array,
   };
+}
+
+function getVerboseMessage(timeseries: TimeseriesSimple, verbose: number) {
+  if (verbose === 1) {
+    const result = {
+      temperature: timeseries.temperature,
+      rain: timeseries.rain,
+      wind_speed: timeseries.wind_speed,
+    }
+    if (timeseries.location_name) {
+      return {
+        location_name: timeseries.location_name,
+        ...result
+      };
+    } else {
+      return result;
+    }
+  } else if (verbose > 1) {
+    return timeseries;
+  } else {
+    return `Weather in ${timeseries.location_name}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
+  }
 }
 
 /**

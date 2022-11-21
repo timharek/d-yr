@@ -2,7 +2,7 @@
 import { getCoordinatesFromName } from './src/nominatim.ts';
 import { _fetch, currentWeather, upcomingForecast } from './src/yr.ts';
 import { getConfig } from './src/config.ts';
-import { Command, UpgradeCommand, GithubProvider } from './deps.ts';
+import { Command, GithubProvider, UpgradeCommand } from './deps.ts';
 
 const data: Data = {
   config: await getConfig().then((res) => res),
@@ -51,8 +51,9 @@ await new Command()
     '',
     ``,
   )
-  .globalOption('-v, --verbose [value:boolean]', 'A more verbose output.', {
-    default: false,
+  .globalOption('-v, --verbose', 'A more verbose output.', {
+    collect: true,
+    value: (value: boolean, previous: number = 0) => value ? previous + 1 : 0,
   })
   .globalOption('--lat <lat:number>', 'Location latitude.')
   .globalOption('--lng <lng:number>', 'Location longitude.')
@@ -65,32 +66,35 @@ await new Command()
       await getResponse(options, name);
 
       if (data.response) {
-        console.log(await currentWeather(data.response));
-      }
-    },
-  )
-  .command('forecast <name:string> [interval:number]', 'Return current weather forecast.')
-  .action(
-    async (
-      options,
-      name,
-      interval
-    ) => {
-      await getResponse(options, name);
-
-      if (data.response) {
-        console.log(await upcomingForecast(data.response, interval));
+        console.log(await currentWeather(data.response, options.verbose));
       }
     },
   )
   .command(
-  "upgrade",
-  new UpgradeCommand({
-    main: "mod.ts",
-    args: ["--allow-net", "--allow-read", "--allow-env"],
-    provider: [
-      new GithubProvider({ repository: "timharek/d-yr" }),
-    ],
-  }),
-)
+    'forecast <name:string> [interval:number]',
+    'Return current weather forecast.',
+  )
+  .action(
+    async (
+      options,
+      name,
+      interval,
+    ) => {
+      await getResponse(options, name);
+
+      if (data.response) {
+        console.log(await upcomingForecast(data.response, interval ?? 1));
+      }
+    },
+  )
+  .command(
+    'upgrade',
+    new UpgradeCommand({
+      main: 'mod.ts',
+      args: ['--allow-net', '--allow-read', '--allow-env'],
+      provider: [
+        new GithubProvider({ repository: 'timharek/d-yr' }),
+      ],
+    }),
+  )
   .parse(Deno.args);

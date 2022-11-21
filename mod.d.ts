@@ -48,6 +48,7 @@ interface Timeseries {
 }
 
 interface TimeseriesSimple {
+  location_name?: string;
   datetime: string;
   symbol: string;
   wind_speed: string;
