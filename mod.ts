@@ -43,11 +43,12 @@ async function getResponse(options: Options, name: string) {
 
 await new Command()
   .name('yr')
-  .version('v1.1.3')
+  .version('v1.2.0')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
-  .example('', ``)
+  .example('Current weather in Bergen', `yr current bergen`)
+  .example('Forecast next 5 hours in Bergen', `yr forecast 5 bergen`)
   .globalOption('-v, --verbose', 'A more verbose output.', {
     collect: true,
     value: (value: boolean, previous: number = 0) => (value ? previous + 1 : 0),
