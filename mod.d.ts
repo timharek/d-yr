@@ -5,6 +5,12 @@ interface Config {
   };
 }
 
+interface Options {
+  lat?: number;
+  lng?: number;
+  verbose?: number;
+}
+
 interface Data {
   config?: Config;
   response?: YrWeather;

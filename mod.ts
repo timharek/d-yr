@@ -27,7 +27,7 @@ function getUrl(lat?: number, lng?: number) {
   return yrUrl;
 }
 
-async function getResponse(options, name: string) {
+async function getResponse(options: Options, name: string) {
   if (name) {
     const coordinatesFromName = await getCoordinatesFromName(name);
     options.lat = coordinatesFromName.lat;
@@ -47,54 +47,44 @@ await new Command()
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
-  .example(
-    '',
-    ``,
-  )
+  .example('', ``)
   .globalOption('-v, --verbose', 'A more verbose output.', {
     collect: true,
-    value: (value: boolean, previous: number = 0) => value ? previous + 1 : 0,
+    value: (value: boolean, previous: number = 0) => (value ? previous + 1 : 0),
   })
   .globalOption('--lat <lat:number>', 'Location latitude.')
   .globalOption('--lng <lng:number>', 'Location longitude.')
   .command('current <name:string>', 'Return current weather forecast.')
-  .action(
-    async (
-      options,
-      name,
-    ) => {
-      await getResponse(options, name);
+  .action(async (options, name) => {
+    await getResponse(options, name);
 
-      if (data.response) {
-        console.log(await currentWeather(data.response, options.verbose));
-      }
-    },
-  )
+    if (data.response) {
+      console.log(await currentWeather(data.response, options.verbose ?? 0));
+    }
+  })
   .command(
     'forecast <name:string> [interval:number]',
     'Return current weather forecast.',
   )
-  .action(
-    async (
-      options,
-      name,
-      interval,
-    ) => {
-      await getResponse(options, name);
+  .action(async (options, name, interval) => {
+    await getResponse(options, name);
 
-      if (data.response) {
-        console.log(await upcomingForecast(data.response, interval ?? 1));
-      }
-    },
-  )
+    if (data.response) {
+      console.log(
+        await upcomingForecast(
+          data.response,
+          interval ?? 1,
+          options.verbose ?? 0,
+        ),
+      );
+    }
+  })
   .command(
     'upgrade',
     new UpgradeCommand({
       main: 'mod.ts',
       args: ['--allow-net', '--allow-read', '--allow-env'],
-      provider: [
-        new GithubProvider({ repository: 'timharek/d-yr' }),
-      ],
+      provider: [new GithubProvider({ repository: 'timharek/d-yr' })],
     }),
   )
   .parse(Deno.args);

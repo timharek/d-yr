@@ -40,7 +40,7 @@ export async function currentWeather(weatherData: YrWeather, verbose: number) {
       `${closestTimeseries.data.next_1_hours.details.precipitation_amount} ${units.precipitation_amount}`,
   } as TimeseriesSimple;
 
-  return getVerboseMessage(result, verbose)
+  return getVerboseMessage(result, verbose);
 }
 
 export function getClosestTimeseries(
@@ -59,6 +59,7 @@ export function getClosestTimeseries(
 export async function upcomingForecast(
   weatherData: YrWeather,
   interval: number,
+  verbose: number,
 ) {
   const units = weatherData.properties.meta.units;
   const closest = getClosestTimeseries(weatherData.properties.timeseries);
@@ -89,7 +90,7 @@ export async function upcomingForecast(
 
   return {
     location_name: await getNameFromCoordinates(lat, lng),
-    array,
+    array: array.map((entry) => getVerboseMessage(entry, verbose)),
   };
 }
 
@@ -99,11 +100,11 @@ function getVerboseMessage(timeseries: TimeseriesSimple, verbose: number) {
       temperature: timeseries.temperature,
       rain: timeseries.rain,
       wind_speed: timeseries.wind_speed,
-    }
+    };
     if (timeseries.location_name) {
       return {
         location_name: timeseries.location_name,
-        ...result
+        ...result,
       };
     } else {
       return result;
