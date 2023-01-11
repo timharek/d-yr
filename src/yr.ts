@@ -17,9 +17,12 @@ export async function _fetch(url: string | URL) {
   return result;
 }
 
-export async function currentWeather(weatherData: YrWeather, verbose: number) {
+export async function currentWeather(
+  weatherData: Yr.IWeather,
+  verbose: number,
+) {
   const units = weatherData.properties.meta.units;
-  const closestTimeseries: Timeseries = getClosestTimeseries(
+  const closestTimeseries: Yr.ITimeseries = getClosestTimeseries(
     weatherData.properties.timeseries,
   );
 
@@ -38,17 +41,17 @@ export async function currentWeather(weatherData: YrWeather, verbose: number) {
     wind_direction: closestTimeseries.data.instant.details.wind_from_direction,
     rain:
       `${closestTimeseries.data.next_1_hours.details.precipitation_amount} ${units.precipitation_amount}`,
-  } as TimeseriesSimple;
+  } as CLI.ITimeseriesSimple;
 
   return getVerboseMessage(result, verbose);
 }
 
 export function getClosestTimeseries(
-  timeseriesArray: Timeseries[],
-): Timeseries {
+  timeseriesArray: Yr.ITimeseries[],
+): Yr.ITimeseries {
   const now: Date = new Date();
 
-  return timeseriesArray.reduce((a: Timeseries, b: Timeseries) =>
+  return timeseriesArray.reduce((a, b) =>
     new Date(a.time).getTime() - now.getTime() <
         new Date(b.time).getTime() - now.getTime()
       ? a
@@ -57,7 +60,7 @@ export function getClosestTimeseries(
 }
 
 export async function upcomingForecast(
-  weatherData: YrWeather,
+  weatherData: Yr.IWeather,
   interval: number,
   verbose: number,
 ) {
@@ -77,7 +80,7 @@ export async function upcomingForecast(
         }`,
         rain:
           `${entry.data.next_1_hours.details.precipitation_amount} ${units.precipitation_amount}`,
-      } as TimeseriesSimple;
+      } as CLI.ITimeseriesSimple;
     }
   });
 
@@ -94,7 +97,7 @@ export async function upcomingForecast(
   };
 }
 
-function getVerboseMessage(timeseries: TimeseriesSimple, verbose: number) {
+function getVerboseMessage(timeseries: CLI.ITimeseriesSimple, verbose: number) {
   if (verbose === 1) {
     const result = {
       temperature: timeseries.temperature,
@@ -119,10 +122,8 @@ function getVerboseMessage(timeseries: TimeseriesSimple, verbose: number) {
 /**
  * Removes undefined from arrays
  */
-// deno-lint-ignore no-explicit-any
-function cleanForecast(input: Array<any>) {
-  // deno-lint-ignore no-explicit-any
-  return input.filter((entry: any) => entry != undefined);
+function cleanForecast(input: Array<unknown>) {
+  return input.filter((entry: unknown) => entry != undefined);
 }
 
 export function getUrl(lat: number, lng: number) {

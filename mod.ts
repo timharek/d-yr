@@ -5,22 +5,22 @@ import { Command, GithubProvider, UpgradeCommand } from './deps.ts';
 
 const currentCmd = new Command()
   .description('Return current weather.')
-  .action(async (options: Options, name: string) => {
+  .action(async (options: CLI.Options, name: string) => {
     const { lat, lng } = await getCoordinatesFromName(name);
     const url = getUrl(lat, lng);
 
-    const yrResponse: YrWeather = await _fetch(url);
+    const yrResponse: Yr.IWeather = await _fetch(url);
 
     console.log(await currentWeather(yrResponse, options.verbose ?? 0));
   });
 
 const forecastCmd = new Command()
   .description('Return forecast.')
-  .action(async (options: Options, name: string, interval: number = 1) => {
+  .action(async (options: CLI.Options, name: string, interval: number = 1) => {
     const { lat, lng } = await getCoordinatesFromName(name);
     const url = getUrl(lat, lng);
 
-    const yrResponse: YrWeather = await _fetch(url);
+    const yrResponse: Yr.IWeather = await _fetch(url);
 
     console.log(
       await upcomingForecast(
