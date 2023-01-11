@@ -2,6 +2,13 @@
 import { format as formatDate } from '../deps.ts';
 import { getNameFromCoordinates } from './nominatim.ts';
 
+/**
+  * Get the current weather as the hour closest from the time the request occured.
+  *
+  * @param weatherData Data from Yr.
+  * @param verbose Verbosity level
+  * @returns Current weather with based on `verbose`-level
+*/
 async function getCurrentWeather(
   weatherData: Yr.IWeather,
   verbose: number,
@@ -44,6 +51,15 @@ function getClosestTimeseries(
   );
 }
 
+/**
+  * Get current upcoming forecast.
+  *
+  * @param weatherData Data from Yr.
+  * @param interval Numer of requested hours of forecast
+  * @param verbose Verbosity level
+  *
+  * @returns Upcoming forecast based on `interval`-level.
+  */
 async function getForecastUpcoming(
   weatherData: Yr.IWeather,
   interval: number,
@@ -111,7 +127,10 @@ function cleanForecast(input: Array<unknown>) {
   return input.filter((entry: unknown) => entry != undefined);
 }
 
-export function getUrl(lat: number, lng: number) {
+/**
+  * @returns Yr.no's request URL
+  */
+function getUrl(lat: number, lng: number) {
   const yrUrl =
     `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
   return yrUrl;
