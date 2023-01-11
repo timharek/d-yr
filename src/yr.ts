@@ -113,25 +113,26 @@ function getVerboseMessage(
   verbose: number,
   type: 'current' | 'forecast' = 'current',
 ) {
+  const { location_name, datetime, temperature, rain, wind_speed } = timeseries;
   if (verbose > 1) {
     return timeseries;
   }
   if (verbose === 1) {
     return {
-      ...(type === 'forecast' && { time: timeseries.datetime.split(' ')[1] }),
-      ...(timeseries.location_name &&
-        { location_name: timeseries.location_name }),
-      temperature: timeseries.temperature,
-      rain: timeseries.rain,
-      wind_speed: timeseries.wind_speed,
+      ...(type === 'forecast' && { time: datetime.split(' ')[1] }),
+      ...(location_name &&
+        { location_name }),
+      temperature,
+      rain,
+      wind_speed,
     };
   }
 
   if (type === 'forecast') {
-    const time = timeseries.datetime.split(' ')[1];
-    return `${time}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
+    const time = datetime.split(' ')[1];
+    return `${time}: ${temperature} with ${wind_speed} and ${rain}`;
   }
-  return `Current weather in ${timeseries.location_name}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
+  return `Current weather in ${location_name}: ${temperature} with ${wind_speed} and ${rain}`;
 }
 
 /**
