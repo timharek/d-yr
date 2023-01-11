@@ -2,22 +2,7 @@
 import { format as formatDate } from '../deps.ts';
 import { getNameFromCoordinates } from './nominatim.ts';
 
-export async function _fetch(url: string | URL) {
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.log(error);
-    });
-
-  return result;
-}
-
-export async function currentWeather(
+async function getCurrentWeather(
   weatherData: Yr.IWeather,
   verbose: number,
 ) {
@@ -46,7 +31,7 @@ export async function currentWeather(
   return getVerboseMessage(result, verbose);
 }
 
-export function getClosestTimeseries(
+function getClosestTimeseries(
   timeseriesArray: Yr.ITimeseries[],
 ): Yr.ITimeseries {
   const now: Date = new Date();
@@ -59,7 +44,7 @@ export function getClosestTimeseries(
   );
 }
 
-export async function upcomingForecast(
+async function getForecastUpcoming(
   weatherData: Yr.IWeather,
   interval: number,
   verbose: number,
@@ -130,4 +115,10 @@ export function getUrl(lat: number, lng: number) {
   const yrUrl =
     `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
   return yrUrl;
+}
+
+export const Yr = {
+  current: getCurrentWeather,
+  forecast: getForecastUpcoming,
+  getUrl,
 }

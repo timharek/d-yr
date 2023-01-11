@@ -1,4 +1,4 @@
-import { _fetch } from './yr.ts';
+import { _fetch } from '../mod.ts';
 
 const API_URL = new URL('https://nominatim.openstreetmap.org');
 
