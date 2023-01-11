@@ -12,9 +12,6 @@ You have now installed d-yr as `yr`.
 
 ## Setup
 
-If you are missing a config-file in `$HOME/.config/yr/config.json`, it will ask
-if you want to create one, and fail if you say no.
-
 Run the project with:
 
 ```sh
