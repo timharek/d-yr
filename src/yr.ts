@@ -102,26 +102,27 @@ async function getForecastUpcoming(
   };
 }
 
+/**
+ * Get verbose message based on verbosity level.
+ * @param timeseries A parsed timeseries from Yr
+ * @param verbose Verbosity level
+ * @returns `verbose == 0` = string, `verbose == 1` = `{ location_name, temperature, rain, wind_speed }` and `verbose > 1` = `CLI.ITimeseriesSimple`
+ */
 function getVerboseMessage(timeseries: CLI.ITimeseriesSimple, verbose: number) {
+  if (verbose > 1) {
+    return timeseries;
+  }
   if (verbose === 1) {
-    const result = {
+    return {
+      ...(timeseries.location_name &&
+        { location_name: timeseries.location_name }),
       temperature: timeseries.temperature,
       rain: timeseries.rain,
       wind_speed: timeseries.wind_speed,
     };
-    if (timeseries.location_name) {
-      return {
-        location_name: timeseries.location_name,
-        ...result,
-      };
-    } else {
-      return result;
-    }
-  } else if (verbose > 1) {
-    return timeseries;
-  } else {
-    return `Weather in ${timeseries.location_name}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
   }
+
+  return `Weather in ${timeseries.location_name}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
 }
 
 /**
