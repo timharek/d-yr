@@ -99,6 +99,12 @@
     "https://deno.land/x/cliffy@v0.25.4/table/row.ts": "5f519ba7488d2ef76cbbf50527f10f7957bfd668ce5b9169abbc44ec88302645",
     "https://deno.land/x/cliffy@v0.25.4/table/table.ts": "ec204c9d08bb3ff1939c5ac7412a4c9ed7d00925d4fc92aff9bfe07bd269258d",
     "https://deno.land/x/cliffy@v0.25.4/table/utils.ts": "187bb7dcbcfb16199a5d906113f584740901dfca1007400cba0df7dcd341bc29",
-    "https://deno.land/x/deno_cli_help@1.0.1/mod.ts": "c448abcf89d46e8ba2cd9912c8a8f40e9d6d497b8208f4ccf418f27a3009c24e"
+    "https://deno.land/x/deno_cli_help@1.0.1/mod.ts": "c448abcf89d46e8ba2cd9912c8a8f40e9d6d497b8208f4ccf418f27a3009c24e",
+    "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/deps.ts": "ece006fe6d3c89050e7d053f207f31f6c23f5c8febadd9c7c826a3462583e717",
+    "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/mod.d.ts": "46808ef269c94f4707b28ff20077f65cc5ee3e19131794b8e8382cbd01858e76",
+    "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/mod.ts": "9669a26a6bb3d17882c97a37f6867844813519a9067b6179375b5fcc7c45e4bc",
+    "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/src/config.ts": "cccd1fcac5ba0a33879c8512515f58904e653e4b4cc23164be6f6dd5903c1990",
+    "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/src/nominatim.ts": "29e17b2e286daee3d6d1f89fe86362e563d53ec1d1f1bb2c32f8a3941bc9ac73",
+    "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/src/yr.ts": "3fb577576875f2f1aaa027c65d6b2fcb413749b4cc97f9ba86139ae5c4202edc"
   }
 }

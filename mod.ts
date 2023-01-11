@@ -41,6 +41,32 @@ async function getResponse(options: Options, name: string) {
   }
 }
 
+const currentCmd = new Command()
+  .description('Return current weather.')
+  .action(async (options, name) => {
+    await getResponse(options, name);
+
+    if (data.response) {
+      console.log(await currentWeather(data.response, options.verbose ?? 0));
+    }
+  })
+
+const forecastCmd = new Command()
+  .description('Return forecast.')
+  .action(async (options, name, interval) => {
+    await getResponse(options, name);
+
+    if (data.response) {
+      console.log(
+        await upcomingForecast(
+          data.response,
+          interval ?? 1,
+          options.verbose ?? 0,
+        ),
+      );
+    }
+  })
+
 await new Command()
   .name('yr')
   .version('v1.2.0')
@@ -55,31 +81,11 @@ await new Command()
   })
   .globalOption('--lat <lat:number>', 'Location latitude.')
   .globalOption('--lng <lng:number>', 'Location longitude.')
-  .command('current <name:string>', 'Return current weather forecast.')
-  .action(async (options, name) => {
-    await getResponse(options, name);
-
-    if (data.response) {
-      console.log(await currentWeather(data.response, options.verbose ?? 0));
-    }
-  })
+  .command('current <name:string>', currentCmd)
   .command(
     'forecast <name:string> [interval:number]',
-    'Return current weather forecast.',
+    forecastCmd,
   )
-  .action(async (options, name, interval) => {
-    await getResponse(options, name);
-
-    if (data.response) {
-      console.log(
-        await upcomingForecast(
-          data.response,
-          interval ?? 1,
-          options.verbose ?? 0,
-        ),
-      );
-    }
-  })
   .command(
     'upgrade',
     new UpgradeCommand({
