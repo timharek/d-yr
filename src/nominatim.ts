@@ -8,7 +8,7 @@ const API_URL = new URL('https://nominatim.openstreetmap.org');
  * @param name Query name
  * @returns Coordinates assosiated with `name`
  */
-export async function getCoordinatesFromName(
+async function getCoordinatesFromName(
   name: string,
 ): Promise<{ lat: number; lng: number }> {
   API_URL.pathname = '/search';
@@ -34,7 +34,7 @@ export async function getCoordinatesFromName(
  * @param lng Longitude
  * @returns Name assosiated with coordinates
  */
-export async function getNameFromCoordinates(
+async function getNameFromCoordinates(
   lat: number,
   lng: number,
 ): Promise<string> {
@@ -51,3 +51,8 @@ export async function getNameFromCoordinates(
     throw new Error(e);
   }
 }
+
+export const Nominatim = {
+  getCoordinatesFromName,
+  getNameFromCoordinates,
+};

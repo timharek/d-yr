@@ -1,6 +1,6 @@
 // @deno-types='../mod.d.ts'
 import { format as formatDate } from '../deps.ts';
-import { getNameFromCoordinates } from './nominatim.ts';
+import { Nominatim } from './nominatim.ts';
 
 /**
  * Get the current weather as the hour closest from the time the request occured.
@@ -24,7 +24,7 @@ async function getCurrentWeather(
   const lat = coordinates[1];
 
   const result = {
-    location_name: await getNameFromCoordinates(lat, lng),
+    location_name: await Nominatim.getNameFromCoordinates(lat, lng),
     datetime: `${formatDate(new Date(closestTime), 'HH:mm')}`,
     symbol: nextHour.summary.symbol_code,
     wind_speed: `${instant.details.wind_speed} ${units.wind_speed}`,
@@ -97,7 +97,7 @@ async function getForecastUpcoming(
     : cleanForecast(result);
 
   return {
-    location_name: await getNameFromCoordinates(lat, lng),
+    location_name: await Nominatim.getNameFromCoordinates(lat, lng),
     array: array.map((entry) => getVerboseMessage(entry, verbose, 'forecast')),
   };
 }
