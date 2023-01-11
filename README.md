@@ -2,10 +2,18 @@
 
 Using the Yr.no / MET.no weather API with Deno.
 
-## Install
+This project has both a CLI and functions to access Yr.no's API.
+
+## Usage
+
+```js
+import { Yr } from 'https://raw.githubusercontent.com/timharek/d-yr/HEAD/mod.ts';
+```
+
+## Install CLI
 
 ```sh
-deno install --allow-net --allow-read --allow-env -n yr https://raw.githubusercontent.com/timharek/d-yr/HEAD/mod.ts
+deno install --allow-net=api.met.no,nominatim.openstreetmap.org -n yr https://raw.githubusercontent.com/timharek/d-yr/HEAD/cli.ts
 ```
 
 You have now installed d-yr as `yr`.
