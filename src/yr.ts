@@ -98,7 +98,7 @@ async function getForecastUpcoming(
 
   return {
     location_name: await getNameFromCoordinates(lat, lng),
-    array: array.map((entry) => getVerboseMessage(entry, verbose)),
+    array: array.map((entry) => getVerboseMessage(entry, verbose, 'forecast')),
   };
 }
 
@@ -108,12 +108,17 @@ async function getForecastUpcoming(
  * @param verbose Verbosity level
  * @returns `verbose == 0` = string, `verbose == 1` = `{ location_name, temperature, rain, wind_speed }` and `verbose > 1` = `CLI.ITimeseriesSimple`
  */
-function getVerboseMessage(timeseries: CLI.ITimeseriesSimple, verbose: number) {
+function getVerboseMessage(
+  timeseries: CLI.ITimeseriesSimple,
+  verbose: number,
+  type: 'current' | 'forecast' = 'current',
+) {
   if (verbose > 1) {
     return timeseries;
   }
   if (verbose === 1) {
     return {
+      ...(type === 'forecast' && { time: timeseries.datetime.split(' ')[1] }),
       ...(timeseries.location_name &&
         { location_name: timeseries.location_name }),
       temperature: timeseries.temperature,
@@ -122,7 +127,11 @@ function getVerboseMessage(timeseries: CLI.ITimeseriesSimple, verbose: number) {
     };
   }
 
-  return `Weather in ${timeseries.location_name}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
+  if (type === 'forecast') {
+    const time = timeseries.datetime.split(' ')[1];
+    return `${time}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
+  }
+  return `Current weather in ${timeseries.location_name}: ${timeseries.temperature} with ${timeseries.wind_speed} and ${timeseries.rain}`;
 }
 
 /**
