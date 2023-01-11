@@ -5,6 +5,3 @@ export {
   GithubProvider,
   UpgradeCommand,
 } from 'https://deno.land/x/cliffy@v0.25.4/command/upgrade/mod.ts';
-
-const HOME_PATH = Deno.env.get('HOME');
-export const CONFIG_FILE_PATH = `${HOME_PATH}/.config/yr/config.json`;

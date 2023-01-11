@@ -124,3 +124,9 @@ function cleanForecast(input: Array<any>) {
   // deno-lint-ignore no-explicit-any
   return input.filter((entry: any) => entry != undefined);
 }
+
+export function getUrl(lat: number, lng: number) {
+  const yrUrl =
+    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
+  return yrUrl;
+}

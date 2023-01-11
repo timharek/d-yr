@@ -1,75 +1,39 @@
 // @deno-types='./mod.d.ts'
 import { getCoordinatesFromName } from './src/nominatim.ts';
-import { _fetch, currentWeather, upcomingForecast } from './src/yr.ts';
-import { getConfig } from './src/config.ts';
+import { _fetch, currentWeather, getUrl, upcomingForecast } from './src/yr.ts';
 import { Command, GithubProvider, UpgradeCommand } from './deps.ts';
-
-const data: Data = {
-  config: await getConfig().then((res) => res),
-};
-
-function getUrl(lat?: number, lng?: number) {
-  if (lat && lng) {
-    data.config = {
-      coordinates: {
-        lat: Number(lat),
-        lng: Number(lng),
-      },
-    };
-  }
-
-  if (!data.config) {
-    return null;
-  }
-  const coordinates = data.config.coordinates;
-  const yrUrl =
-    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${coordinates.lat}&lon=${coordinates.lng}`;
-  return yrUrl;
-}
-
-async function getResponse(options: Options, name: string) {
-  if (name) {
-    const coordinatesFromName = await getCoordinatesFromName(name);
-    options.lat = coordinatesFromName.lat;
-    options.lng = coordinatesFromName.lng;
-  }
-
-  const url = getUrl(options.lat, options.lng);
-
-  if (url) {
-    data.response = await _fetch(url);
-  }
-}
 
 const currentCmd = new Command()
   .description('Return current weather.')
-  .action(async (options, name) => {
-    await getResponse(options, name);
+  .action(async (options: Options, name: string) => {
+    const { lat, lng } = await getCoordinatesFromName(name);
+    const url = getUrl(lat, lng);
 
-    if (data.response) {
-      console.log(await currentWeather(data.response, options.verbose ?? 0));
-    }
-  })
+    const yrResponse: YrWeather = await _fetch(url);
+
+    console.log(await currentWeather(yrResponse, options.verbose ?? 0));
+  });
 
 const forecastCmd = new Command()
   .description('Return forecast.')
-  .action(async (options, name, interval) => {
-    await getResponse(options, name);
+  .action(async (options: Options, name: string, interval: number = 1) => {
+    const { lat, lng } = await getCoordinatesFromName(name);
+    const url = getUrl(lat, lng);
 
-    if (data.response) {
-      console.log(
-        await upcomingForecast(
-          data.response,
-          interval ?? 1,
-          options.verbose ?? 0,
-        ),
-      );
-    }
-  })
+    const yrResponse: YrWeather = await _fetch(url);
+
+    console.log(
+      await upcomingForecast(
+        yrResponse,
+        interval,
+        options.verbose ?? 0,
+      ),
+    );
+  });
 
 await new Command()
   .name('yr')
-  .version('v1.2.0')
+  .version('v1.2.1')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
@@ -79,8 +43,6 @@ await new Command()
     collect: true,
     value: (value: boolean, previous: number = 0) => (value ? previous + 1 : 0),
   })
-  .globalOption('--lat <lat:number>', 'Location latitude.')
-  .globalOption('--lng <lng:number>', 'Location longitude.')
   .command('current <name:string>', currentCmd)
   .command(
     'forecast <name:string> [interval:number]',

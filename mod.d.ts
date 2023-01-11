@@ -6,9 +6,7 @@ interface Config {
 }
 
 interface Options {
-  lat?: number;
-  lng?: number;
-  verbose?: number;
+  verbose: number;
 }
 
 interface Data {
