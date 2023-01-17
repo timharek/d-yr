@@ -2,4 +2,3 @@
 vendor/
 .vscode
 .env
-*.json
