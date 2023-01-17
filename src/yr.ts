@@ -104,6 +104,7 @@ async function getForecastUpcoming(
 
 /**
  * Get verbose message based on verbosity level.
+ *
  * @param timeseries A parsed timeseries from Yr
  * @param verbose Verbosity level
  * @returns `verbose == 0` = string, `verbose == 1` = `{ location_name, temperature, rain, wind_speed }` and `verbose > 1` = `CLI.ITimeseriesSimple`
@@ -137,12 +138,21 @@ function getVerboseMessage(
 
 /**
  * Removes undefined from arrays
+ *
+ * @param array Timeseries from parsed from Yr
+ * @returns Array without any undefined entries
  */
-function cleanForecast(input: Array<unknown>) {
-  return input.filter((entry: unknown) => entry != undefined);
+function cleanForecast(
+  array: (CLI.ITimeseriesSimple | undefined)[],
+): CLI.ITimeseriesSimple[] {
+  return array.filter((entry) => entry != undefined) as CLI.ITimeseriesSimple[];
 }
 
 /**
+ *  Get Yr.no's request URL with coordinates.
+ *
+ * @param lat Latitude
+ * @param lng Longitude
  * @returns Yr.no's request URL
  */
 function getUrl(lat: number, lng: number) {
