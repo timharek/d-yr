@@ -35,27 +35,18 @@ declare namespace Yr {
           wind_speed: number;
         };
       };
-      next_12_hours: {
-        summary: {
-          symbol_code: string;
-        };
-      };
-      next_1_hours: {
-        summary: {
-          symbol_code: string;
-        };
-        details: {
-          precipitation_amount: number;
-        };
-      };
-      next_6_hours: {
-        summary: {
-          symbol_code: string;
-        };
-        details: {
-          precipitation_amount: number;
-        };
-      };
+      next_12_hours: INextHour;
+      next_1_hours: Required<INextHour>;
+      next_6_hours: Required<INextHour>;
+    };
+  }
+
+  interface INextHour {
+    summary: {
+      symbol_code: string;
+    };
+    details?: {
+      precipitation_amount: number;
     };
   }
 }
