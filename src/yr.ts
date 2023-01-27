@@ -18,7 +18,7 @@ async function getCurrentWeather(
     geometry: { coordinates },
   } = weatherData;
   const { data: { instant, next_1_hours: nextHour }, time: closestTime }:
-    Yr.ITimeseries = getClosestTimeseries(timeseries);
+    Yr.ITimeseries = getEarliestTimeseries(timeseries);
 
   const lng = coordinates[0];
   const lat = coordinates[1];
@@ -39,17 +39,13 @@ async function getCurrentWeather(
   return getVerboseMessage(result, verbose);
 }
 
-function getClosestTimeseries(
+function getEarliestTimeseries(
   timeseriesArray: Yr.ITimeseries[],
 ): Yr.ITimeseries {
-  const now: Date = new Date();
-
-  return timeseriesArray.reduce((a, b) =>
-    new Date(a.time).getTime() - now.getTime() <
-        new Date(b.time).getTime() - now.getTime()
-      ? a
-      : b
-  );
+  return timeseriesArray.sort((a, b) =>
+    new Date(a.time).getTime() -
+    new Date(b.time).getTime()
+  )[0];
 }
 
 /**
@@ -70,7 +66,7 @@ async function getForecastUpcoming(
     properties: { meta: { units }, timeseries },
     geometry: { coordinates },
   } = weatherData;
-  const { time: closestTime } = getClosestTimeseries(timeseries);
+  const { time: closestTime } = getEarliestTimeseries(timeseries);
 
   const result = weatherData.properties.timeseries.map((entry) => {
     const { data: { instant, next_1_hours: nextHour }, time } = entry;
@@ -165,4 +161,8 @@ export const Yr = {
   current: getCurrentWeather,
   forecast: getForecastUpcoming,
   getUrl,
+};
+
+export const YrForTesting = {
+  getEarliestTimeseries,
 };
