@@ -1,6 +1,6 @@
-image: alpine/edge
+image: nixos/latest  
 packages:
-  - cargo
+  - deno
 environment:
   BUILD_SUBMITTER: git.sr.ht
 sources:
@@ -11,7 +11,6 @@ triggers:
     to: tim@harek.no
 tasks:
   - test: |
-      cargo install deno --locked
       cd d-yr
       if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
         complete-build; \
