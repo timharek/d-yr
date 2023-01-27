@@ -17,3 +17,25 @@ Deno.test('Earliest time series', () => {
 
   assertEquals(closetsTimeSeries, timeseries2);
 });
+
+Deno.test('Clean forecast, remove all undefined', () => {
+  const timeseries1: CLI.ITimeseriesSimple = {
+    datetime: 'test',
+    rain: 'test',
+    symbol: 'test',
+    temperature: 'test',
+    wind_direction: 0,
+    wind_speed: 'test',
+  };
+
+  const array: (CLI.ITimeseriesSimple | undefined)[] = [
+    timeseries1,
+    undefined,
+  ];
+
+  assertEquals(array.length, 2);
+
+  const cleanedArray = YrForTesting.cleanForecast(array);
+
+  assertEquals(cleanedArray.length, 1);
+});

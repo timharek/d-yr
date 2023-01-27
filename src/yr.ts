@@ -165,4 +165,5 @@ export const Yr = {
 
 export const YrForTesting = {
   getEarliestTimeseries,
+  cleanForecast,
 };
