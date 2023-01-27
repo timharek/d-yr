@@ -6,9 +6,8 @@ sources:
 tasks:
     - install-deno: |
         curl -fsSL https://deno.land/x/install/install.sh | sh
-    - install-deployctl: |
+    - test: |
         DENO_INSTALL="/home/build/.deno"
         PATH="$DENO_INSTALL/bin:$PATH"
-    - test: |
         cd d-yr
         deno test
