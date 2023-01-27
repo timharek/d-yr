@@ -13,15 +13,16 @@ async function getCurrentWeather(
   weatherData: Yr.IWeather,
   verbose: number,
 ) {
-  const {
-    properties: { meta: { units }, timeseries },
-    geometry: { coordinates },
-  } = weatherData;
-  const { data: { instant, next_1_hours: nextHour }, time: closestTime }:
-    Yr.ITimeseries = getEarliestTimeseries(timeseries);
+  const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
+    weatherData,
+  );
+  const earliestTimeseries: Yr.ITimeseries = getEarliestTimeseries(timeseries);
+  const { instant, nextHour, closestTime } = getPropertiesFromTimeseries(
+    earliestTimeseries,
+  );
 
-  const lng = coordinates[0];
-  const lat = coordinates[1];
+  const lng = coordinates.lng;
+  const lat = coordinates.lat;
 
   const result = {
     location_name: await Nominatim.getNameFromCoordinates(lat, lng),
@@ -37,6 +38,25 @@ async function getCurrentWeather(
   } as CLI.ITimeseriesSimple;
 
   return getVerboseMessage(result, verbose);
+}
+
+function getPropertiesFromWeatherData(weatherData: Yr.IWeather) {
+  return {
+    units: weatherData.properties.meta.units,
+    timeseries: weatherData.properties.timeseries,
+    coordinates: {
+      lng: weatherData.geometry.coordinates[0],
+      lat: weatherData.geometry.coordinates[1],
+    },
+  };
+}
+
+function getPropertiesFromTimeseries(timeseries: Yr.ITimeseries) {
+  return {
+    instant: timeseries.data.instant,
+    nextHour: timeseries.data.next_1_hours,
+    closestTime: timeseries.time,
+  };
 }
 
 function getEarliestTimeseries(
@@ -62,10 +82,9 @@ async function getForecastUpcoming(
   interval: number,
   verbose: number,
 ) {
-  const {
-    properties: { meta: { units }, timeseries },
-    geometry: { coordinates },
-  } = weatherData;
+  const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
+    weatherData,
+  );
   const { time: closestTime } = getEarliestTimeseries(timeseries);
 
   const result = weatherData.properties.timeseries.map((entry) => {
@@ -85,8 +104,8 @@ async function getForecastUpcoming(
     }
   });
 
-  const lng = coordinates[0];
-  const lat = coordinates[1];
+  const lng = coordinates.lng;
+  const lat = coordinates.lat;
 
   const array = interval
     ? cleanForecast(result).slice(0, interval)
