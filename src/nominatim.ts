@@ -35,9 +35,9 @@ async function getCoordinatesFromName(
  * @returns Name assosiated with coordinates
  */
 async function getNameFromCoordinates(
-  lat: number,
-  lng: number,
+  coordinates: Coordinates,
 ): Promise<string> {
+  const { lat, lng } = coordinates;
   API_URL.pathname = '/reverse';
   API_URL.searchParams.set('format', 'json');
   API_URL.searchParams.set('lat', String(lat));

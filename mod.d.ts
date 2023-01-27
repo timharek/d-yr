@@ -66,3 +66,8 @@ declare namespace CLI {
     rain: string;
   }
 }
+
+declare interface Coordinates {
+  lng: number;
+  lat: number;
+}

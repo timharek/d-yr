@@ -21,11 +21,8 @@ async function getCurrentWeather(
     earliestTimeseries,
   );
 
-  const lng = coordinates.lng;
-  const lat = coordinates.lat;
-
   const result = {
-    location_name: await Nominatim.getNameFromCoordinates(lat, lng),
+    location_name: await Nominatim.getNameFromCoordinates(coordinates),
     datetime: `${formatDate(new Date(closestTime), 'HH:mm')}`,
     symbol: nextHour.summary.symbol_code,
     wind_speed: `${instant.details.wind_speed} ${units.wind_speed}`,
@@ -104,15 +101,12 @@ async function getForecastUpcoming(
     }
   });
 
-  const lng = coordinates.lng;
-  const lat = coordinates.lat;
-
   const array = interval
     ? cleanForecast(result).slice(0, interval)
     : cleanForecast(result);
 
   return {
-    location_name: await Nominatim.getNameFromCoordinates(lat, lng),
+    location_name: await Nominatim.getNameFromCoordinates(coordinates),
     array: array.map((entry) => getVerboseMessage(entry, verbose, 'forecast')),
   };
 }
