@@ -3,6 +3,10 @@ packages:
     - unzip
 sources:
     - https://git.sr.ht/~timhare/d-yr
+triggers:
+  - action: email
+    condition: failure
+    to: tim@harek.no
 tasks:
     - install-deno: |
         curl -fsSL https://deno.land/x/install/install.sh | sh
