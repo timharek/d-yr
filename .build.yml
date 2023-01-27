@@ -1,6 +1,4 @@
 image: alpine/edge
-packages:
-  - deno
 environment:
   BUILD_SUBMITTER: git.sr.ht
 sources:
@@ -11,6 +9,7 @@ triggers:
     to: tim@harek.no
 tasks:
   - test: |
+      curl -fsSL https://deno.land/x/install/install.sh | sh
       cd d-yr
       if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
         complete-build; \
