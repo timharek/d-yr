@@ -1,19 +1,14 @@
-image: nixos/latest  
+image: ubuntu/lts
 packages:
-  - deno
-environment:
-  BUILD_SUBMITTER: git.sr.ht
+    - unzip
 sources:
-  - git+ssh://git@git.sr.ht/~timharek/d-yr
-triggers:
-  - action: email
-    condition: always
-    to: tim@harek.no
+    - https://git.sr.ht/~timhare/d-yr
 tasks:
-  - test: |
-      cd d-yr
-      if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
-        complete-build; \
-      fi
-      deno test
-
+    - install-deno: |
+        curl -fsSL https://deno.land/x/install/install.sh | sh
+    - install-deployctl: |
+        DENO_INSTALL="/home/build/.deno"
+        PATH="$DENO_INSTALL/bin:$PATH"
+    - test: |
+        cd d-yr
+        deno test
