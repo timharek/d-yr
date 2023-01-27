@@ -7,7 +7,7 @@ This project has both a CLI and functions to access Yr.no's API.
 ## Usage
 
 ```js
-import { Yr } from "https://raw.githubusercontent.com/timharek/d-yr/HEAD/mod.ts";
+import { Yr } from 'https://raw.githubusercontent.com/timharek/d-yr/HEAD/mod.ts';
 ```
 
 ## Install CLI
