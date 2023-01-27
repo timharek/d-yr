@@ -1,0 +1,19 @@
+image: alpine/edge
+packages:
+  - deno
+environment:
+  BUILD_SUBMITTER: git.sr.ht
+sources:
+  - git+ssh://git@git.sr.ht/~timharek/d-yr
+triggers:
+  - action: email
+    condition: always
+    to: tim@harek.no
+tasks:
+  - test: |
+      cd d-yr
+      if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
+        complete-build; \
+      fi
+      deno test
+
