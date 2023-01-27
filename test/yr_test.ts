@@ -39,3 +39,12 @@ Deno.test('Clean forecast, remove all undefined', () => {
 
   assertEquals(cleanedArray.length, 1);
 });
+
+Deno.test('Get API URL with coordinates', () => {
+  const lat = 1;
+  const lon = 2;
+  const url = YrForTesting.getUrl(lat, lon);
+
+  assertEquals(url.searchParams.get('lat'), lat.toString());
+  assertEquals(url.searchParams.get('lon'), lon.toString());
+});

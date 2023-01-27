@@ -151,10 +151,14 @@ function cleanForecast(
  * @param lng Longitude
  * @returns Yr.no's request URL
  */
-function getUrl(lat: number, lng: number) {
-  const yrUrl =
-    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`;
-  return yrUrl;
+function getUrl(lat: number, lng: number): URL {
+  const url = new URL(
+    'https://api.met.no/weatherapi/locationforecast/2.0/compact',
+  );
+  url.searchParams.set('lat', lat.toString());
+  url.searchParams.set('lon', lng.toString());
+
+  return url;
 }
 
 export const Yr = {
@@ -166,4 +170,5 @@ export const Yr = {
 export const YrForTesting = {
   getEarliestTimeseries,
   cleanForecast,
+  getUrl,
 };
