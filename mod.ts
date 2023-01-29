@@ -1,23 +1,29 @@
 export { Nominatim } from './src/nominatim.ts';
 export { Yr } from './src/yr.ts';
+export { getCurrentWeather, getForecastedWeather } from './src/util.ts';
 
 /**
- * Shared fetch-function for simple GET-requests.
+ * Access Yr's weather API and Nominatim's names API for getting weather details
+ * about a specific location.
  *
- * @param url The URL to send GET-request to
- * @returns Result from GET-request.
+ * ## Example for current weather
+ *
+ * ```ts
+ * import { getCurrentWeather } from 'https://deno.land/x/dyr/mod.ts';
+ *
+ * const currentWeather = getCurrentWeather('Bergen');
+ * // do what you need to do with the weather data.
+ * ```
+ *
+ * ## Example for forecasted weather
+ *
+ * ```ts
+ * import { getForecastedWeather } from 'https://deno.land/x/dyr/mod.ts';
+ *
+ * const location = 'Bergen';
+ * const hoursAhead = 5;
+ * const verboseLevel = 3;
+ * const currentWeather = getForecastedWeather(location, hoursAhead, verboseLevel);
+ * // do what you need to do with the weather data.
+ * ```
  */
-export async function _fetch(url: string | URL) {
-  const result = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then((response) => response.json())
-    .catch((error) => {
-      console.log(error);
-    });
-
-  return result;
-}

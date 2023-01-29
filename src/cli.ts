@@ -1,40 +1,22 @@
 // @deno-types='../mod.d.ts'
-import { Nominatim } from './nominatim.ts';
-import { Yr } from './yr.ts';
 import { Command, GithubProvider, UpgradeCommand } from '../deps.ts';
-import { _fetch } from '../mod.ts';
+import { _fetch, getCurrentWeather, getForecastedWeather } from './util.ts';
 
 const currentCmd = new Command()
   .description('Return current weather.')
   .action(async (options: CLI.Options, name: string) => {
-    const { lat, lng } = await Nominatim.getCoordinatesFromName(name);
-    const url = Yr.getUrl(lat, lng);
-
-    const yrResponse: Yr.IWeather = await _fetch(url);
-
-    console.log(await Yr.current(yrResponse, options.verbose ?? 0));
+    console.log(await getCurrentWeather(name, options.verbose));
   });
 
 const forecastCmd = new Command()
   .description('Return forecast.')
   .action(async (options: CLI.Options, name: string, interval: number = 1) => {
-    const { lat, lng } = await Nominatim.getCoordinatesFromName(name);
-    const url = Yr.getUrl(lat, lng);
-
-    const yrResponse: Yr.IWeather = await _fetch(url);
-
-    console.log(
-      await Yr.forecast(
-        yrResponse,
-        interval,
-        options.verbose ?? 0,
-      ),
-    );
+    console.log(await getForecastedWeather(name, interval, options.verbose));
   });
 
 await new Command()
   .name('yr')
-  .version('v1.3.2')
+  .version('v1.3.3')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
