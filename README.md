@@ -6,31 +6,52 @@
 
 # d-yr
 
-Using the Yr.no / MET.no weather API with Deno.
+Access Yr's weather API and Nominatim's names API for getting weather details
+about a specific location.
+
+You can read more about the API's on [met.yr.no](https://api.met.no/weatherapi/locationforecast/2.0/documentation) and [Nominatim](https://nominatim.org/).
 
 This project has both a CLI and functions to access Yr.no's API.
 
 ## Usage
 
-```js
-import { Yr } from "https://deno.land/x/dyr/mod.ts";
+### Example for current weather
+
+```ts
+import { getCurrentWeather } from "https://deno.land/x/dyr/mod.ts";
+const currentWeather = getCurrentWeather("Bergen");
+// do what you need to do with the weather data.
 ```
 
-## Install CLI
+### Example for forecasted weather
+
+```ts
+import { getForecastedWeather } from "https://deno.land/x/dyr/mod.ts";
+const location = "Bergen";
+const hoursAhead = 5;
+const verboseLevel = 3;
+const currentWeather = getForecastedWeather(location, hoursAhead, verboseLevel);
+// do what you need to do with the weather data.
+```
+
+## CLI
+
+### Installation
 
 ```sh
-deno install --allow-net=api.met.no,nominatim.openstreetmap.org -n yr https://deno.land/x/dyr/src/cli.ts
+deno install --allow-net=api.met.no,nominatim.openstreetmap.org \
+  -n yr https://deno.land/x/dyr/src/cli.ts
 ```
 
 You have now installed d-yr as `yr`.
 
-## Setup
+### Usage
 
-Run the project with:
+Run the CLI with:
 
 ```sh
 # Current weather forecast for location
 yr current Bergen
 # OR forecast for location
-yr forecast Bangkok
+yr forecast Bangkok 5
 ```
