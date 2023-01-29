@@ -1,8 +1,8 @@
-// @deno-types='./mod.d.ts'
-import { Nominatim } from './src/nominatim.ts';
-import { Yr } from './src/yr.ts';
-import { Command, GithubProvider, UpgradeCommand } from './deps.ts';
-import { _fetch } from './mod.ts';
+// @deno-types='../mod.d.ts'
+import { Nominatim } from './nominatim.ts';
+import { Yr } from './yr.ts';
+import { Command, GithubProvider, UpgradeCommand } from '../deps.ts';
+import { _fetch } from '../mod.ts';
 
 const currentCmd = new Command()
   .description('Return current weather.')

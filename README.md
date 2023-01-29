@@ -19,7 +19,7 @@ import { Yr } from "https://raw.githubusercontent.com/timharek/d-yr/HEAD/mod.ts"
 ## Install CLI
 
 ```sh
-deno install --allow-net=api.met.no,nominatim.openstreetmap.org -n yr https://raw.githubusercontent.com/timharek/d-yr/HEAD/cli.ts
+deno install --allow-net=api.met.no,nominatim.openstreetmap.org -n yr https://raw.githubusercontent.com/timharek/d-yr/HEAD/src/cli.ts
 ```
 
 You have now installed d-yr as `yr`.

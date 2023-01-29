@@ -1,15 +1,22 @@
 {
   "lint": {
     "files": {
-      "include": ["src/", "types/"]
+      "include": [
+        "src/",
+        "types/"
+      ]
     },
     "rules": {
-      "tags": ["recommended"]
+      "tags": [
+        "recommended"
+      ]
     }
   },
   "fmt": {
     "files": {
-      "include": ["./"]
+      "include": [
+        "./"
+      ]
     },
     "options": {
       "useTabs": false,
@@ -19,8 +26,7 @@
       "proseWrap": "preserve"
     }
   },
-
   "tasks": {
-    "run": "deno run --allow-net=api.met.no,nominatim.openstreetmap.org cli.ts"
+    "run": "deno run --allow-net=api.met.no,nominatim.openstreetmap.org src/cli.ts"
   }
 }
