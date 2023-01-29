@@ -1,7 +1,3 @@
-export { Nominatim } from './src/nominatim.ts';
-export { Yr } from './src/yr.ts';
-export { getCurrentWeather, getForecastedWeather } from './src/util.ts';
-
 /**
  * Access Yr's weather API and Nominatim's names API for getting weather details
  * about a specific location.
@@ -26,4 +22,10 @@ export { getCurrentWeather, getForecastedWeather } from './src/util.ts';
  * const currentWeather = getForecastedWeather(location, hoursAhead, verboseLevel);
  * // do what you need to do with the weather data.
  * ```
+ *
+ * @module
  */
+
+export { Nominatim } from './src/nominatim.ts';
+export { Yr } from './src/yr.ts';
+export { getCurrentWeather, getForecastedWeather } from './src/util.ts';
