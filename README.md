@@ -13,13 +13,13 @@ This project has both a CLI and functions to access Yr.no's API.
 ## Usage
 
 ```js
-import { Yr } from "https://raw.githubusercontent.com/timharek/d-yr/HEAD/mod.ts";
+import { Yr } from "https://deno.land/x/dyr/mod.ts";
 ```
 
 ## Install CLI
 
 ```sh
-deno install --allow-net=api.met.no,nominatim.openstreetmap.org -n yr https://raw.githubusercontent.com/timharek/d-yr/HEAD/src/cli.ts
+deno install --allow-net=api.met.no,nominatim.openstreetmap.org -n yr https://deno.land/x/dyr/src/cli.ts
 ```
 
 You have now installed d-yr as `yr`.
