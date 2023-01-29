@@ -1,7 +1,4 @@
-export { format } from 'https://deno.land/std@0.165.0/datetime/mod.ts';
-export { parse } from 'https://deno.land/std@0.165.0/flags/mod.ts';
-export { Command } from 'https://deno.land/x/cliffy@v0.24.2/command/mod.ts';
-export {
-  GithubProvider,
-  UpgradeCommand,
-} from 'https://deno.land/x/cliffy@v0.25.4/command/upgrade/mod.ts';
+export { format } from 'std/datetime/mod.ts';
+export { parse } from 'std/flags/mod.ts';
+export { Command } from 'cliffy/command/mod.ts';
+export { GithubProvider, UpgradeCommand } from 'cliffy/command/upgrade/mod.ts';
