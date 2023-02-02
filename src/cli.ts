@@ -16,7 +16,7 @@ const forecastCmd = new Command()
 
 await new Command()
   .name('yr')
-  .version('v1.3.3')
+  .version('v1.3.4')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://github.com/timharek/d-yr')
