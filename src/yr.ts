@@ -1,6 +1,6 @@
 // @deno-types='../mod.d.ts'
 
-import { format as formatDate } from '../deps.ts';
+import { Colors, format as formatDate } from '../deps.ts';
 import { Nominatim } from './nominatim.ts';
 import { getForecastMessage, getWeatherMessage } from './util.ts';
 
@@ -22,9 +22,10 @@ async function getCurrentWeather(
   const { instant, nextHour, closestTime } = getPropertiesFromTimeseries(
     earliestTimeseries,
   );
+  const location_name = await Nominatim.getNameFromCoordinates(coordinates);
 
   const result = {
-    location_name: await Nominatim.getNameFromCoordinates(coordinates),
+    location_name,
     datetime: `${formatDate(new Date(closestTime), 'HH:mm')}`,
     symbol: nextHour.summary.symbol_code,
     wind_speed: `${instant.details.wind_speed} ${units.wind_speed}`,
@@ -40,7 +41,9 @@ async function getCurrentWeather(
     return result;
   }
 
-  return getWeatherMessage(result);
+  return `${
+    Colors.bold(Colors.black(Colors.bgBlue(` ${location_name} now `)))
+  }\n  ${getWeatherMessage(result)}`;
 }
 
 function getPropertiesFromWeatherData(weatherData: Yr.IWeather) {

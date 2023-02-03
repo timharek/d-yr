@@ -1,5 +1,6 @@
 import { Nominatim } from './nominatim.ts';
 import { Yr } from './yr.ts';
+import { Colors } from '../deps.ts';
 
 /**
  * Shared fetch-function for simple GET-requests.
@@ -62,12 +63,21 @@ export async function getForecastedWeather(
 }
 
 export function getWeatherMessage(input: CLI.ITimeseriesSimple) {
-  return input.symbol;
+  return `${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
 }
 
 export function getForecastMessage(
   locationName: string,
   input: CLI.ITimeseriesSimple[],
 ) {
-  return locationName;
+  const newArray = input.map((item) => {
+    return `${
+      Colors.bold(Colors.black(Colors.bgBlue(` ${item.datetime} `)))
+    }\n  ${getWeatherMessage(item)}\n`;
+  });
+  return `${
+    Colors.underline(
+      `Forecast in ${locationName} for next ${newArray.length} hours`,
+    )
+  }\n\n${newArray.join('\n')}`;
 }
