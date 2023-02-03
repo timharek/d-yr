@@ -18,16 +18,16 @@ This project has both a CLI and functions to access Yr.no's API.
 ### Example for current weather
 
 ```ts
-import { getCurrentWeather } from "https://deno.land/x/dyr/mod.ts";
-const currentWeather = getCurrentWeather("Bergen");
+import { getCurrentWeather } from 'https://deno.land/x/dyr/mod.ts';
+const currentWeather = getCurrentWeather('Bergen');
 // do what you need to do with the weather data.
 ```
 
 ### Example for forecasted weather
 
 ```ts
-import { getForecastedWeather } from "https://deno.land/x/dyr/mod.ts";
-const location = "Bergen";
+import { getForecastedWeather } from 'https://deno.land/x/dyr/mod.ts';
+const location = 'Bergen';
 const hoursAhead = 5;
 const verboseLevel = 3;
 const currentWeather = getForecastedWeather(location, hoursAhead, verboseLevel);
