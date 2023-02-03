@@ -1,6 +1,8 @@
 // @deno-types='../mod.d.ts'
+
 import { format as formatDate } from '../deps.ts';
 import { Nominatim } from './nominatim.ts';
+import { getForecastMessage, getWeatherMessage } from './util.ts';
 
 /**
  * Get the current weather as the hour closest from the time the request occured.
@@ -11,7 +13,7 @@ import { Nominatim } from './nominatim.ts';
  */
 async function getCurrentWeather(
   weatherData: Yr.IWeather,
-  verbose: number,
+  jsonOutput = true,
 ) {
   const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
     weatherData,
@@ -34,7 +36,11 @@ async function getCurrentWeather(
       `${nextHour.details.precipitation_amount} ${units.precipitation_amount}`,
   } as CLI.ITimeseriesSimple;
 
-  return getVerboseMessage(result, verbose);
+  if (jsonOutput) {
+    return result;
+  }
+
+  return getWeatherMessage(result);
 }
 
 function getPropertiesFromWeatherData(weatherData: Yr.IWeather) {
@@ -77,14 +83,15 @@ function getEarliestTimeseries(
 async function getForecastUpcoming(
   weatherData: Yr.IWeather,
   interval: number,
-  verbose: number,
+  jsonOutput = true,
 ) {
   const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
     weatherData,
   );
   const { time: closestTime } = getEarliestTimeseries(timeseries);
+  const location_name = await Nominatim.getNameFromCoordinates(coordinates);
 
-  const result = weatherData.properties.timeseries.map((entry) => {
+  const resultArray = weatherData.properties.timeseries.map((entry) => {
     const { data: { instant, next_1_hours: nextHour }, time } = entry;
     if (time != closestTime && nextHour) {
       return {
@@ -102,47 +109,17 @@ async function getForecastUpcoming(
   });
 
   const array = interval
-    ? cleanForecast(result).slice(0, interval)
-    : cleanForecast(result);
+    ? cleanForecast(resultArray).slice(0, interval)
+    : cleanForecast(resultArray);
 
-  return {
-    location_name: await Nominatim.getNameFromCoordinates(coordinates),
-    array: array.map((entry) => getVerboseMessage(entry, verbose, 'forecast')),
-  };
-}
-
-/**
- * Get verbose message based on verbosity level.
- *
- * @param timeseries A parsed timeseries from Yr
- * @param verbose Verbosity level
- * @returns `verbose == 0` = string, `verbose == 1` = `{ location_name, temperature, rain, wind_speed }` and `verbose > 1` = `CLI.ITimeseriesSimple`
- */
-function getVerboseMessage(
-  timeseries: CLI.ITimeseriesSimple,
-  verbose: number,
-  type: 'current' | 'forecast' = 'current',
-) {
-  const { location_name, datetime, temperature, rain, wind_speed } = timeseries;
-  if (verbose > 1) {
-    return timeseries;
-  }
-  if (verbose === 1) {
+  if (jsonOutput) {
     return {
-      ...(type === 'forecast' && { time: datetime.split(' ')[1] }),
-      ...(location_name &&
-        { location_name }),
-      temperature,
-      rain,
-      wind_speed,
+      location_name,
+      array,
     };
   }
 
-  if (type === 'forecast') {
-    const time = datetime.split(' ')[1];
-    return `${time}: ${temperature} with ${wind_speed} and ${rain}`;
-  }
-  return `Current weather in ${location_name}: ${temperature} with ${wind_speed} and ${rain}`;
+  return getForecastMessage(location_name, array);
 }
 
 /**

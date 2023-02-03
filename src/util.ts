@@ -60,3 +60,14 @@ export async function getForecastedWeather(
 
   return await Yr.forecast(yrResponse, interval, verbose);
 }
+
+export function getWeatherMessage(input: CLI.ITimeseriesSimple) {
+  return input.symbol;
+}
+
+export function getForecastMessage(
+  locationName: string,
+  input: CLI.ITimeseriesSimple[],
+) {
+  return locationName;
+}

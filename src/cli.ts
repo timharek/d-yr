@@ -4,14 +4,16 @@ import { _fetch, getCurrentWeather, getForecastedWeather } from './util.ts';
 
 const currentCmd = new Command()
   .description('Return current weather.')
-  .action(async (options: CLI.Options, name: string) => {
-    console.log(await getCurrentWeather(name, options.verbose));
+  .action(async (options: unknown, name: string) => {
+    console.log(await getCurrentWeather(name, options.json as boolean));
   });
 
 const forecastCmd = new Command()
   .description('Return forecast.')
-  .action(async (options: CLI.Options, name: string, interval: number = 1) => {
-    console.log(await getForecastedWeather(name, interval, options.verbose));
+  .action(async (options: unknown, name: string, interval = 1) => {
+    console.log(
+      await getForecastedWeather(name, interval, options.json as boolean),
+    );
   });
 
 await new Command()
@@ -22,10 +24,8 @@ await new Command()
   .meta('Source', 'https://github.com/timharek/d-yr')
   .example('Current weather in Bergen', `yr current bergen`)
   .example('Forecast next 5 hours in Bergen', `yr forecast 5 bergen`)
-  .globalOption('-v, --verbose', 'A more verbose output.', {
-    collect: true,
-    value: (value: boolean, previous: number = 0) => (value ? previous + 1 : 0),
-  })
+  .globalOption('-d, --debug', 'Show debugging output.')
+  .globalOption('--json', 'Display JSON output.')
   .command('current <name:string>', currentCmd)
   .command(
     'forecast <name:string> [interval:number]',
