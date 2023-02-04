@@ -1,6 +1,7 @@
 import { Nominatim } from './nominatim.ts';
 import { Yr } from './yr.ts';
 import { Colors } from '../deps.ts';
+import { WeatherSymbols } from './weather_symbols.ts';
 
 /**
  * Shared fetch-function for simple GET-requests.
@@ -64,7 +65,9 @@ export async function getForecastedWeather(
 }
 
 export function getWeatherMessage(input: CLI.ITimeseriesSimple) {
-  return `${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
+  return `${
+    WeatherSymbols[input.symbol]
+  }   ${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
 }
 
 export function getForecastMessage(
