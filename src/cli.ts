@@ -17,6 +17,14 @@ const forecastCmd = new Command()
     );
   });
 
+const todayCmd = new Command()
+  .description('Return forecast.')
+  .action(async (options: unknown, name: string, interval = 1) => {
+    console.log(
+      await getForecastedWeather(name, interval, options.json as boolean),
+    );
+  });
+
 await new Command()
   .name('yr')
   .version('v1.4.0')
@@ -32,4 +40,5 @@ await new Command()
     'forecast <name:string> [interval:number]',
     forecastCmd,
   )
+  .command('today', todayCmd)
   .parse(Deno.args);

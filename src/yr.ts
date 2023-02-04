@@ -25,22 +25,11 @@ async function getCurrentWeather(
     weatherData,
   );
   const earliestTimeseries: Yr.ITimeseries = getEarliestTimeseries(timeseries);
-  const { instant, nextHour, closestTime } = getPropertiesFromTimeseries(
-    earliestTimeseries,
-  );
   const location_name = await Nominatim.getNameFromCoordinates(coordinates);
 
   const result = {
     location_name,
-    datetime: `${formatDate(new Date(closestTime), 'HH:mm')}`,
-    symbol: nextHour.summary.symbol_code,
-    wind_speed: `${instant.details.wind_speed} ${units.wind_speed}`,
-    temperature: `${instant.details.air_temperature} ${
-      units.air_temperature[0].toUpperCase()
-    }`,
-    wind_direction: instant.details.wind_from_direction,
-    rain:
-      `${nextHour.details.precipitation_amount} ${units.precipitation_amount}`,
+    ...getSimpleTimeseries(earliestTimeseries, units),
   } as CLI.ITimeseriesSimple;
 
   if (jsonOutput) {
@@ -60,14 +49,6 @@ function getPropertiesFromWeatherData(weatherData: Yr.IWeather) {
       lng: weatherData.geometry.coordinates[0],
       lat: weatherData.geometry.coordinates[1],
     },
-  };
-}
-
-function getPropertiesFromTimeseries(timeseries: Yr.ITimeseries) {
-  return {
-    instant: timeseries.data.instant,
-    nextHour: timeseries.data.next_1_hours,
-    closestTime: timeseries.time,
   };
 }
 
@@ -92,19 +73,9 @@ async function getForecastUpcoming(
   const location_name = await Nominatim.getNameFromCoordinates(coordinates);
 
   const resultArray = weatherData.properties.timeseries.map((entry) => {
-    const { data: { instant, next_1_hours: nextHour }, time } = entry;
+    const { data: { next_1_hours: nextHour }, time } = entry;
     if (time != closestTime && nextHour) {
-      return {
-        datetime: `${formatDate(new Date(time), 'yyyy-MM-dd HH:mm')}`,
-        symbol: nextHour.summary.symbol_code,
-        wind_speed: `${instant.details.wind_speed} ${units.wind_speed}`,
-        wind_direction: instant.details.wind_from_direction,
-        temperature: `${instant.details.air_temperature} ${
-          units.air_temperature[0].toUpperCase()
-        }`,
-        rain:
-          `${nextHour.details.precipitation_amount} ${units.precipitation_amount}`,
-      } as CLI.ITimeseriesSimple;
+      return getSimpleTimeseries(entry, units);
     }
   });
 
@@ -120,6 +91,24 @@ async function getForecastUpcoming(
   }
 
   return getForecastMessage(location_name, array);
+}
+
+function getSimpleTimeseries(
+  timeseries: Yr.ITimeseries,
+  units: Yr.IUnits,
+): CLI.ITimeseriesSimple {
+  const { data: { instant, next_1_hours: nextHour }, time } = timeseries;
+  return {
+    datetime: `${formatDate(new Date(time), 'yyyy-MM-dd HH:mm')}`,
+    symbol: nextHour.summary.symbol_code,
+    wind_speed: `${instant.details.wind_speed} ${units.wind_speed}`,
+    wind_direction: instant.details.wind_from_direction,
+    temperature: `${instant.details.air_temperature} ${
+      units.air_temperature[0].toUpperCase()
+    }`,
+    rain:
+      `${nextHour.details.precipitation_amount} ${units.precipitation_amount}`,
+  } as CLI.ITimeseriesSimple;
 }
 
 export const Yr = {
