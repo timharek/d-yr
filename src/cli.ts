@@ -32,12 +32,4 @@ await new Command()
     'forecast <name:string> [interval:number]',
     forecastCmd,
   )
-  .command(
-    'upgrade',
-    new UpgradeCommand({
-      main: 'mod.ts',
-      args: ['--allow-net', '--allow-read', '--allow-env'],
-      provider: [new GithubProvider({ repository: 'timharek/d-yr' })],
-    }),
-  )
   .parse(Deno.args);
