@@ -27,17 +27,16 @@ export async function _fetch(url: string | URL) {
  * Get current weather.
  *
  * @param locationName Name of the location, can be village, city etc.
- * @param verbose Level of detail in the response.
  *
  * @returns Current weather
  */
-export async function getCurrentWeather(locationName: string, verbose = 0) {
+export async function getCurrentWeather(locationName: string) {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
 
-  return await Yr.current(yrResponse, verbose);
+  return await Yr.current(yrResponse);
 }
 
 /**
@@ -45,21 +44,19 @@ export async function getCurrentWeather(locationName: string, verbose = 0) {
  *
  * @param locationName Name of the location, can be village, city etc.
  * @param interval Number of hours ahead of current time.
- * @param verbose Level of detail in the response.
  *
  * @returns Forecasted weather
  */
 export async function getForecastedWeather(
   locationName: string,
   interval = 1,
-  verbose = 0,
 ) {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
 
-  return await Yr.forecast(yrResponse, interval, verbose);
+  return await Yr.forecast(yrResponse, interval);
 }
 
 export function getWeatherMessage(input: CLI.ITimeseriesSimple) {

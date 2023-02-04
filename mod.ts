@@ -18,7 +18,7 @@
  *
  * const location = 'Bergen';
  * const hoursAhead = 5;
- * const verboseLevel = 3;
+
  * const currentWeather = getForecastedWeather(location, hoursAhead, verboseLevel);
  * // do what you need to do with the weather data.
  * ```
