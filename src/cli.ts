@@ -6,6 +6,7 @@ import {
   getCurrentWeather,
   getForecastedWeather,
   getTodaysWeather,
+  getTomorrowsWeather,
 } from './util.ts';
 
 const currentCmd = new Command()
@@ -30,6 +31,14 @@ const todayCmd = new Command()
     );
   });
 
+const tomorrowCmd = new Command()
+  .description('Return tomorrow\'s forecast.')
+  .action(async (options: unknown, name: string) => {
+    console.log(
+      await getTomorrowsWeather(name, options.json as boolean),
+    );
+  });
+
 await new Command()
   .name('yr')
   .version('v1.4.0')
@@ -46,4 +55,5 @@ await new Command()
     forecastCmd,
   )
   .command('today <name:string>', todayCmd)
+  .command('tomorrow <name:string>', tomorrowCmd)
   .parse(Deno.args);

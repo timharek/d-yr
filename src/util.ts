@@ -101,9 +101,26 @@ export async function getTomorrowsWeather(
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
-  const interval = getHoursLeftForTheDay();
+  const filteredResponse = getTomorrowsWeatherResponse(yrResponse);
 
-  return await Yr.forecast(yrResponse, interval, jsonOutput);
+  return await Yr.forecast(filteredResponse, 24, jsonOutput);
+}
+
+function getTomorrowsWeatherResponse(input: Yr.IWeather): Yr.IWeather {
+  const filteredTimeseries = input.properties.timeseries.filter((item) => {
+    const itemDate = new Date(item.time);
+    const tomorrow = getDayAfterDate(new Date());
+
+    return itemDate.getDate() === tomorrow.getDate();
+  });
+
+  return {
+    ...input,
+    properties: {
+      ...input.properties,
+      timeseries: filteredTimeseries,
+    },
+  };
 }
 
 export function getHoursLeftForTheDay(): number {
