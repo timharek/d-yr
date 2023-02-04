@@ -1,4 +1,5 @@
 // @deno-types='../mod.d.ts'
+
 import { Command, GithubProvider, UpgradeCommand } from '../deps.ts';
 import { _fetch, getCurrentWeather, getForecastedWeather } from './util.ts';
 
@@ -25,7 +26,7 @@ await new Command()
   .example('Current weather in Bergen', `yr current bergen`)
   .example('Forecast next 5 hours in Bergen', `yr forecast 5 bergen`)
   .globalOption('-d, --debug', 'Show debugging output.')
-  .globalOption('--json', 'Display JSON output.')
+  .globalOption('--json', 'Display JSON output.', { default: false })
   .command('current <name:string>', currentCmd)
   .command(
     'forecast <name:string> [interval:number]',

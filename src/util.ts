@@ -30,13 +30,16 @@ export async function _fetch(url: string | URL) {
  *
  * @returns Current weather
  */
-export async function getCurrentWeather(locationName: string) {
+export async function getCurrentWeather(
+  locationName: string,
+  jsonOutput: boolean,
+) {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
 
-  return await Yr.current(yrResponse);
+  return await Yr.current(yrResponse, jsonOutput);
 }
 
 /**
@@ -50,13 +53,14 @@ export async function getCurrentWeather(locationName: string) {
 export async function getForecastedWeather(
   locationName: string,
   interval = 1,
+  jsonOutput: boolean,
 ) {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
 
-  return await Yr.forecast(yrResponse, interval);
+  return await Yr.forecast(yrResponse, interval, jsonOutput);
 }
 
 export function getWeatherMessage(input: CLI.ITimeseriesSimple) {
