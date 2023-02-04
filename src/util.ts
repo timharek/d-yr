@@ -66,6 +66,56 @@ export async function getForecastedWeather(
   return await Yr.forecast(yrResponse, interval, jsonOutput);
 }
 
+/**
+ * Get today's weather.
+ *
+ * @param locationName Name of the location, can be village, city etc.
+ *
+ * @returns Forecasted weather
+ */
+export async function getTodaysWeather(
+  locationName: string,
+  jsonOutput = false,
+) {
+  const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
+  const url = Yr.getUrl(lat, lng);
+
+  const yrResponse: Yr.IWeather = await _fetch(url);
+  const interval = getHoursLeftForTheDay();
+
+  return await Yr.forecast(yrResponse, interval, jsonOutput);
+}
+
+/**
+ * Get tomorrow's weather.
+ *
+ * @param locationName Name of the location, can be village, city etc.
+ *
+ * @returns Forecasted weather
+ */
+export async function getTomorrowsWeather(
+  locationName: string,
+  jsonOutput = false,
+) {
+  const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
+  const url = Yr.getUrl(lat, lng);
+
+  const yrResponse: Yr.IWeather = await _fetch(url);
+  const interval = getHoursLeftForTheDay();
+
+  return await Yr.forecast(yrResponse, interval, jsonOutput);
+}
+
+export function getHoursLeftForTheDay(): number {
+  const date = new Date();
+  return 24 - date.getHours();
+}
+
+export function getDayAfterDate(date: Date): Date {
+  const tomorrow = new Date(date.setHours(25, 0, 0, 0));
+  return tomorrow;
+}
+
 export function getWeatherMessage(input: CLI.ITimeseriesSimple) {
   return `${
     WeatherSymbols[input.symbol]

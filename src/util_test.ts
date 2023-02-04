@@ -1,5 +1,11 @@
 import { assertEquals } from 'https://deno.land/std@0.176.0/testing/asserts.ts';
-import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
+import {
+  cleanForecast,
+  getDayAfterDate,
+  getEarliestTimeseries,
+  getHoursLeftForTheDay,
+  getUrl,
+} from './util.ts';
 
 Deno.test('Earliest time series', () => {
   const timeseries1: Partial<Yr.ITimeseries> = {
@@ -47,4 +53,20 @@ Deno.test('Get API URL with coordinates', () => {
 
   assertEquals(url.searchParams.get('lat'), lat.toString());
   assertEquals(url.searchParams.get('lon'), lon.toString());
+});
+
+Deno.test('Get date on day after 2023-02-04', () => {
+  const date = new Date('2023-02-04');
+
+  const nextDay = getDayAfterDate(date);
+
+  assertEquals(nextDay.toISOString(), '2023-02-05T00:00:00.000Z');
+});
+
+Deno.test('Get date on day after 2023-02-04T20:00:00.000Z', () => {
+  const date = new Date('2023-02-04T20:00:00.000Z');
+
+  const nextDay = getDayAfterDate(date);
+
+  assertEquals(nextDay.toISOString(), '2023-02-05T00:00:00.000Z');
 });

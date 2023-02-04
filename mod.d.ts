@@ -8,18 +8,20 @@ declare namespace Yr {
     properties: {
       meta: {
         updated_at: Date;
-        units: {
-          air_pressure_at_sea_level: string;
-          air_temperature: string;
-          cloud_area_fraction: string;
-          precipitation_amount: string;
-          relative_humidity: string;
-          wind_from_direction: string;
-          wind_speed: string;
-        };
+        units: IUnits;
       };
       timeseries: Array<ITimeseries>;
     };
+  }
+
+  interface IUnits {
+    air_pressure_at_sea_level: string;
+    air_temperature: string;
+    cloud_area_fraction: string;
+    precipitation_amount: string;
+    relative_humidity: string;
+    wind_from_direction: string;
+    wind_speed: string;
   }
 
   interface ITimeseries {

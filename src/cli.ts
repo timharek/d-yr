@@ -1,7 +1,12 @@
 // @deno-types='../mod.d.ts'
 
 import { Command, GithubProvider, UpgradeCommand } from '../deps.ts';
-import { _fetch, getCurrentWeather, getForecastedWeather } from './util.ts';
+import {
+  _fetch,
+  getCurrentWeather,
+  getForecastedWeather,
+  getTodaysWeather,
+} from './util.ts';
 
 const currentCmd = new Command()
   .description('Return current weather.')
@@ -18,10 +23,10 @@ const forecastCmd = new Command()
   });
 
 const todayCmd = new Command()
-  .description('Return forecast.')
-  .action(async (options: unknown, name: string, interval = 1) => {
+  .description('Return today\'s forecast.')
+  .action(async (options: unknown, name: string) => {
     console.log(
-      await getForecastedWeather(name, interval, options.json as boolean),
+      await getTodaysWeather(name, options.json as boolean),
     );
   });
 
@@ -40,5 +45,5 @@ await new Command()
     'forecast <name:string> [interval:number]',
     forecastCmd,
   )
-  .command('today', todayCmd)
+  .command('today <name:string>', todayCmd)
   .parse(Deno.args);
