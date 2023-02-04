@@ -49,6 +49,10 @@ declare namespace Yr {
       precipitation_amount: number;
     };
   }
+
+  interface IWeatherSymbols {
+    [key: string]: string;
+  }
 }
 
 declare namespace CLI {

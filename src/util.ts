@@ -1,3 +1,5 @@
+// @deno-types='../mod.d.ts'
+
 import { Nominatim } from './nominatim.ts';
 import { Yr } from './yr.ts';
 import { Colors } from '../deps.ts';
