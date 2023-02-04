@@ -18,9 +18,9 @@
  *
  * const location = 'Bergen';
  * const hoursAhead = 5;
-
- * const currentWeather = getForecastedWeather(location, hoursAhead, verboseLevel);
- * // do what you need to do with the weather data.
+ * const jsonOutput = true; // The returned response as JSON
+ *
+ * const currentWeather = getForecastedWeather(location, hoursAhead, jsonOutput);
  * ```
  *
  * @module
