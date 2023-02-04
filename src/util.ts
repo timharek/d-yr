@@ -33,7 +33,7 @@ export async function _fetch(url: string | URL) {
  */
 export async function getCurrentWeather(
   locationName: string,
-  jsonOutput: boolean,
+  jsonOutput = false,
 ) {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
@@ -54,7 +54,7 @@ export async function getCurrentWeather(
 export async function getForecastedWeather(
   locationName: string,
   interval = 1,
-  jsonOutput: boolean,
+  jsonOutput = false,
 ) {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);

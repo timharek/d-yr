@@ -26,7 +26,7 @@ await new Command()
   .example('Current weather in Bergen', `yr current bergen`)
   .example('Forecast next 5 hours in Bergen', `yr forecast 5 bergen`)
   .globalOption('-d, --debug', 'Show debugging output.')
-  .globalOption('--json', 'Display JSON output.', { default: false })
+  .globalOption('--json', 'Display JSON output.')
   .command('current <name:string>', currentCmd)
   .command(
     'forecast <name:string> [interval:number]',
