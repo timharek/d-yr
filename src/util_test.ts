@@ -1,5 +1,5 @@
-import { assertEquals } from 'https://deno.land/std@0.174.0/testing/asserts.ts';
-import { YrForTesting } from '../src/yr.ts';
+import { assertEquals } from 'https://deno.land/std@0.176.0/testing/asserts.ts';
+import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
 
 Deno.test('Earliest time series', () => {
   const timeseries1: Partial<Yr.ITimeseries> = {
@@ -11,7 +11,7 @@ Deno.test('Earliest time series', () => {
 
   const timeseriesArray = [timeseries1, timeseries2] as Yr.ITimeseries[];
 
-  const closetsTimeSeries = YrForTesting.getEarliestTimeseries(
+  const closetsTimeSeries = getEarliestTimeseries(
     timeseriesArray,
   );
 
@@ -35,7 +35,7 @@ Deno.test('Clean forecast, remove all undefined', () => {
 
   assertEquals(array.length, 2);
 
-  const cleanedArray = YrForTesting.cleanForecast(array);
+  const cleanedArray = cleanForecast(array);
 
   assertEquals(cleanedArray.length, 1);
 });
@@ -43,7 +43,7 @@ Deno.test('Clean forecast, remove all undefined', () => {
 Deno.test('Get API URL with coordinates', () => {
   const lat = 1;
   const lon = 2;
-  const url = YrForTesting.getUrl(lat, lon);
+  const url = getUrl(lat, lon);
 
   assertEquals(url.searchParams.get('lat'), lat.toString());
   assertEquals(url.searchParams.get('lon'), lon.toString());

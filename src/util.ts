@@ -78,3 +78,41 @@ export function getForecastMessage(
     )
   }\n\n${newArray.join('\n')}`;
 }
+
+/**
+ * Removes undefined from arrays
+ *
+ * @param array Timeseries from parsed from Yr
+ * @returns Array without any undefined entries
+ */
+export function cleanForecast(
+  array: (CLI.ITimeseriesSimple | undefined)[],
+): CLI.ITimeseriesSimple[] {
+  return array.filter((entry) => entry != undefined) as CLI.ITimeseriesSimple[];
+}
+
+/**
+ *  Get Yr.no's request URL with coordinates.
+ *
+ * @param lat Latitude
+ * @param lng Longitude
+ * @returns Yr.no's request URL
+ */
+export function getUrl(lat: number, lng: number): URL {
+  const url = new URL(
+    'https://api.met.no/weatherapi/locationforecast/2.0/compact',
+  );
+  url.searchParams.set('lat', lat.toString());
+  url.searchParams.set('lon', lng.toString());
+
+  return url;
+}
+
+export function getEarliestTimeseries(
+  timeseriesArray: Yr.ITimeseries[],
+): Yr.ITimeseries {
+  return timeseriesArray.sort((a, b) =>
+    new Date(a.time).getTime() -
+    new Date(b.time).getTime()
+  )[0];
+}
