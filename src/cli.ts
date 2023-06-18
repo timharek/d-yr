@@ -1,6 +1,6 @@
 // @deno-types='../mod.d.ts'
 
-import { Command, GithubProvider, UpgradeCommand } from '../deps.ts';
+import { Command } from '../deps.ts';
 import {
   _fetch,
   getCurrentWeather,
