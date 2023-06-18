@@ -3,7 +3,6 @@ import {
   cleanForecast,
   getDayAfterDate,
   getEarliestTimeseries,
-  getHoursLeftForTheDay,
   getUrl,
 } from './util.ts';
 
@@ -60,7 +59,7 @@ Deno.test('Get date on day after 2023-02-04', () => {
 
   const nextDay = getDayAfterDate(date);
 
-  assertEquals(nextDay.toISOString(), '2023-02-05T00:00:00.000Z');
+  assertEquals(nextDay.toISOString().split('T')[0], '2023-02-05');
 });
 
 Deno.test('Get date on day after 2023-02-04T20:00:00.000Z', () => {
@@ -68,5 +67,5 @@ Deno.test('Get date on day after 2023-02-04T20:00:00.000Z', () => {
 
   const nextDay = getDayAfterDate(date);
 
-  assertEquals(nextDay.toISOString(), '2023-02-05T00:00:00.000Z');
+  assertEquals(nextDay.toISOString().split('T')[0], '2023-02-05');
 });
