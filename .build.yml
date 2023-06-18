@@ -17,7 +17,6 @@ tasks:
         PATH="$DENO_INSTALL/bin:$PATH"
         cd $DIR
         deno test
-        image: alpine/edge
     - check: |
         cd $DIR
         if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
