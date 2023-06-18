@@ -1,8 +1,10 @@
 image: ubuntu/lts
 packages:
     - unzip
-sources:
-    - https://git.sr.ht/~timhare/d-yr
+secrets:
+  - 0323bc6f-a046-4b96-8496-2bac6e7ee107
+environment:
+  DIR: d-yr
 triggers:
   - action: email
     condition: failure
@@ -13,5 +15,21 @@ tasks:
     - test: |
         DENO_INSTALL="/home/build/.deno"
         PATH="$DENO_INSTALL/bin:$PATH"
-        cd d-yr
+        cd $DIR
         deno test
+        image: alpine/edge
+    - check: |
+        cd $DIR
+        if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
+          complete-build; \
+        fi
+    - mirror: |
+        cd $DIR
+        git remote add github git@github.com:timharek/d-yr.git
+        ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+        git push github main
+        if [ "$(git describe --exact-match --tags HEAD)" ]; then \
+          git push --tags github; \
+        fi
+
+
