@@ -1,4 +1,7 @@
 {
+  "tasks": {
+    "run": "deno run --allow-net=api.met.no,nominatim.openstreetmap.org src/cli.ts"
+  },
   "lint": {
     "include": [
       "src/",
@@ -26,7 +29,4 @@
     "singleQuote": true,
     "proseWrap": "preserve"
   },
-  "tasks": {
-    "run": "deno run --allow-net=api.met.no,nominatim.openstreetmap.org src/cli.ts"
-  }
 }
