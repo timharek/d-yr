@@ -29,24 +29,27 @@ const currentCmd = new Command()
 const forecastCmd = new Command()
   .description('Return forecast.')
   .action(async (options: unknown, name: string, interval = 1) => {
+    // TODO: Add message format for non-JSON result
     console.log(
-      await getForecastedWeather(name, interval, options.json as boolean),
+      await getForecastedWeather(name, interval),
     );
   });
 
 const todayCmd = new Command()
   .description('Return today\'s forecast.')
   .action(async (options: unknown, name: string) => {
+    // TODO: Add message format for non-JSON result
     console.log(
-      await getTodaysWeather(name, options.json as boolean),
+      await getTodaysWeather(name),
     );
   });
 
 const tomorrowCmd = new Command()
   .description('Return tomorrow\'s forecast.')
   .action(async (options: unknown, name: string) => {
+    // TODO: Add message format for non-JSON result
     console.log(
-      await getTomorrowsWeather(name, options.json as boolean),
+      await getTomorrowsWeather(name),
     );
   });
 
