@@ -15,6 +15,10 @@ function parseWeather(input: TimeseriesMinified): string {
   }   ${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
 }
 
+function messageHeader(heading: string): string {
+  return `${Colors.bold(Colors.underline(`${heading}`))}`;
+}
+
 export async function currentMessage(
   { json }: Options,
   name: string,
@@ -25,9 +29,7 @@ export async function currentMessage(
     return;
   }
   console.log(
-    `${Colors.bold(Colors.underline(` ${name} now `))}\n  ${
-      parseWeather(currentWeather)
-    }`,
+    `${messageHeader(`${name} now`)}\n  ${parseWeather(currentWeather)}`,
   );
 }
 
@@ -50,9 +52,7 @@ function _forecastMessage(
     return;
   }
   const newArray = forecast.array.map((item) => {
-    return `${
-      Colors.bold(Colors.black(Colors.bgBlue(` ${item.datetime} `)))
-    }\n  ${parseWeather(item)}\n`;
+    return `${messageHeader(`${item.datetime}`)}\n  ${parseWeather(item)}\n`;
   });
   console.log(`${
     Colors.underline(
