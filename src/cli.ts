@@ -36,6 +36,9 @@ await new Command()
   .example('Current weather in Bergen', `yr current bergen`)
   .example('Forecast next 5 hours in Bergen', `yr forecast 5 bergen`)
   .globalOption('--json', 'Display JSON output.')
+  .action(function (): void {
+    this.showHelp();
+  })
   .command('current <name:string>', currentCmd)
   .command(
     'forecast <name:string> [interval:number]',
