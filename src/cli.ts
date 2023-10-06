@@ -9,7 +9,6 @@ import { _fetch } from './util.ts';
 
 export interface Options {
   json?: boolean;
-  debug?: boolean;
 }
 
 const currentCmd = new Command()
@@ -36,7 +35,6 @@ await new Command()
   .meta('Source', 'https://deno.land/x/dyr')
   .example('Current weather in Bergen', `yr current bergen`)
   .example('Forecast next 5 hours in Bergen', `yr forecast 5 bergen`)
-  .globalOption('-d, --debug', 'Show debugging output.')
   .globalOption('--json', 'Display JSON output.')
   .command('current <name:string>', currentCmd)
   .command(
