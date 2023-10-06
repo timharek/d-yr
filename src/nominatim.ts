@@ -2,6 +2,28 @@ import { _fetch } from './util.ts';
 
 const API_URL = new URL('https://nominatim.openstreetmap.org');
 
+// TODO: Not a complete interface
+interface SearchResult {
+  place_id: number;
+  licence: string;
+  osm_type: string;
+  osm_id: number;
+  lat: string;
+  lon: string;
+  class: string;
+  type: string;
+  place_rank: number;
+  importance: number;
+  addresstype: string;
+  name: string;
+  display_name: string;
+  boundingbox: string[];
+  address?: {
+    village: string;
+    city: string;
+  };
+}
+
 /**
  * Get coordinates based on name.
  *
@@ -16,14 +38,17 @@ async function getCoordinatesFromName(
   API_URL.searchParams.set('q', name);
 
   try {
-    const result = await _fetch(API_URL);
+    const result = await _fetch<SearchResult[]>(API_URL);
 
     return {
-      lat: result[0].lat,
-      lng: result[0].lon,
+      lat: Number(result[0].lat),
+      lng: Number(result[0].lon),
     };
-  } catch (e) {
-    throw new Error(e);
+  } catch (_e) {
+    console.error(
+      `Coordinates lookup failed. Check if "${name}" is spelled correct.`,
+    );
+    Deno.exit(1);
   }
 }
 
@@ -44,11 +69,12 @@ async function getNameFromCoordinates(
   API_URL.searchParams.set('lon', String(lng));
 
   try {
-    const result = await _fetch(API_URL);
+    const result = await _fetch<SearchResult>(API_URL);
 
-    return result.address.village || result.address.city;
-  } catch (e) {
-    throw new Error(e);
+    return result.address?.village || result.address?.city || 'null';
+  } catch (_e) {
+    console.error('Name lookup failed');
+    Deno.exit(1);
   }
 }
 
