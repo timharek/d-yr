@@ -35,14 +35,13 @@ export async function _fetch(url: string | URL) {
  */
 export async function getCurrentWeather(
   locationName: string,
-  jsonOutput = false,
-) {
+): Promise<CLI.ITimeseriesSimple> {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
 
-  return await Yr.current(yrResponse, jsonOutput);
+  return await Yr.current(yrResponse);
 }
 
 /**

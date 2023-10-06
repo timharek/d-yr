@@ -1,5 +1,6 @@
 // @deno-types='../mod.d.ts'
 
+import { Colors } from '../deps.ts';
 import { Command } from '../deps.ts';
 import {
   _fetch,
@@ -7,12 +8,22 @@ import {
   getForecastedWeather,
   getTodaysWeather,
   getTomorrowsWeather,
+  getWeatherMessage,
 } from './util.ts';
 
 const currentCmd = new Command()
   .description('Return current weather.')
   .action(async (options: unknown, name: string) => {
-    console.log(await getCurrentWeather(name, options.json as boolean));
+    const currentWeather = await getCurrentWeather(name);
+    if (options.json) {
+      console.log(currentWeather);
+      return;
+    }
+    console.log(
+      `${Colors.bold(Colors.black(Colors.bgBlue(` ${name} now `)))}\n  ${
+        getWeatherMessage(currentWeather)
+      }`,
+    );
   });
 
 const forecastCmd = new Command()

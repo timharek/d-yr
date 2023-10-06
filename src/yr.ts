@@ -19,26 +19,17 @@ import {
  */
 async function getCurrentWeather(
   weatherData: Yr.IWeather,
-  jsonOutput = true,
-): Promise<CLI.ITimeseriesSimple | string> {
+): Promise<CLI.ITimeseriesSimple> {
   const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
     weatherData,
   );
   const earliestTimeseries: Yr.ITimeseries = getEarliestTimeseries(timeseries);
   const location_name = await Nominatim.getNameFromCoordinates(coordinates);
 
-  const result = {
+  return {
     location_name,
     ...getSimpleTimeseries(earliestTimeseries, units),
   } as CLI.ITimeseriesSimple;
-
-  if (jsonOutput) {
-    return result;
-  }
-
-  return `${
-    Colors.bold(Colors.black(Colors.bgBlue(` ${location_name} now `)))
-  }\n  ${getWeatherMessage(result)}`;
 }
 
 interface WeatherDataProps {
