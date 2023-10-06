@@ -5,6 +5,7 @@ import {
   getEarliestTimeseries,
   getUrl,
 } from './util.ts';
+import { TimeseriesMinified } from './yr.ts';
 
 Deno.test('Earliest time series', () => {
   const timeseries1: Partial<Yr.ITimeseries> = {
@@ -24,7 +25,7 @@ Deno.test('Earliest time series', () => {
 });
 
 Deno.test('Clean forecast, remove all undefined', () => {
-  const timeseries1: CLI.ITimeseriesSimple = {
+  const timeseries1: TimeseriesMinified = {
     datetime: 'test',
     rain: 'test',
     symbol: 'test',
@@ -33,7 +34,7 @@ Deno.test('Clean forecast, remove all undefined', () => {
     wind_speed: 'test',
   };
 
-  const array: (CLI.ITimeseriesSimple | undefined)[] = [
+  const array: (TimeseriesMinified | undefined)[] = [
     timeseries1,
     undefined,
   ];

@@ -1,5 +1,5 @@
 import { Nominatim } from './nominatim.ts';
-import { Forecast, Yr } from './yr.ts';
+import { Forecast, TimeseriesMinified, Yr } from './yr.ts';
 
 /**
  * Shared fetch-function for simple GET-requests.
@@ -31,7 +31,7 @@ export async function _fetch<T>(url: string | URL): Promise<T> {
  */
 export async function getCurrent(
   locationName: string,
-): Promise<CLI.ITimeseriesSimple> {
+): Promise<TimeseriesMinified> {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
@@ -113,9 +113,9 @@ export function getDayAfterDate(date: Date): Date {
  * @returns Array without any undefined entries
  */
 export function cleanForecast(
-  array: (CLI.ITimeseriesSimple | undefined)[],
-): CLI.ITimeseriesSimple[] {
-  return array.filter((entry) => entry != undefined) as CLI.ITimeseriesSimple[];
+  array: (TimeseriesMinified | undefined)[],
+): TimeseriesMinified[] {
+  return array.filter((entry) => entry != undefined) as TimeseriesMinified[];
 }
 
 /**

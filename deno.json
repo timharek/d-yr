@@ -2,6 +2,11 @@
   "tasks": {
     "run": "deno run --allow-net=api.met.no,nominatim.openstreetmap.org src/cli.ts"
   },
+  "compilerOptions": {
+    "types": [
+      "./mod.d.ts"
+    ]
+  },
   "lint": {
     "include": [
       "src/",

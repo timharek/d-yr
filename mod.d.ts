@@ -57,22 +57,6 @@ declare namespace Yr {
   }
 }
 
-declare namespace CLI {
-  interface Options {
-    verbose: number;
-  }
-
-  interface ITimeseriesSimple {
-    location_name?: string;
-    datetime: string;
-    symbol: string;
-    wind_speed: string;
-    temperature: string;
-    wind_direction: number;
-    rain: string;
-  }
-}
-
 declare interface Coordinates {
   lng: number;
   lat: number;

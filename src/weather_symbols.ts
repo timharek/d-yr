@@ -1,5 +1,3 @@
-// @deno-types='../mod.d.ts'
-
 export const WeatherSymbols: Yr.IWeatherSymbols = {
   clearsky: '☀️',
   cloudy: '☁️',

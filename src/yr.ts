@@ -2,6 +2,16 @@ import { format as formatDate } from '../deps.ts';
 import { Nominatim } from './nominatim.ts';
 import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
 
+export interface TimeseriesMinified {
+  location_name?: string;
+  datetime: string;
+  symbol: string;
+  wind_speed: string;
+  temperature: string;
+  wind_direction: number;
+  rain: string;
+}
+
 /**
  * Get the current weather as the hour closest from the time the request occured.
  *
@@ -11,7 +21,7 @@ import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
  */
 async function getCurrent(
   weatherData: Yr.IWeather,
-): Promise<CLI.ITimeseriesSimple> {
+): Promise<TimeseriesMinified> {
   const { units, timeseries, coordinates } = getProperties(
     weatherData,
   );
@@ -21,7 +31,7 @@ async function getCurrent(
   return {
     location_name,
     ...getSimpleTimeseries(earliestTimeseries, units),
-  } as CLI.ITimeseriesSimple;
+  } as TimeseriesMinified;
 }
 
 interface WeatherDataProps {
@@ -48,7 +58,7 @@ function getProperties(
 
 export interface Forecast {
   location_name: string;
-  array: CLI.ITimeseriesSimple[];
+  array: TimeseriesMinified[];
 }
 /**
  * Get current upcoming forecast.
@@ -89,7 +99,7 @@ async function getForecast(
 function getSimpleTimeseries(
   timeseries: Yr.ITimeseries,
   units: Yr.IUnits,
-): CLI.ITimeseriesSimple {
+): TimeseriesMinified {
   const { data: { instant, next_1_hours: nextHour }, time } = timeseries;
   return {
     datetime: `${formatDate(new Date(time), 'yyyy-MM-dd HH:mm')}`,

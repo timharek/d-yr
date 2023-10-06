@@ -7,9 +7,9 @@ import {
   getTomorrow,
 } from './util.ts';
 import { WeatherSymbols } from './weather_symbols.ts';
-import { Forecast } from './yr.ts';
+import { Forecast, TimeseriesMinified } from './yr.ts';
 
-function parseWeather(input: CLI.ITimeseriesSimple): string {
+function parseWeather(input: TimeseriesMinified): string {
   return `${
     WeatherSymbols[input.symbol]
   }   ${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
