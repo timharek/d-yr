@@ -1,5 +1,3 @@
-// @deno-types='../mod.d.ts'
-
 import { Nominatim } from './nominatim.ts';
 import { Forecast, Yr } from './yr.ts';
 
@@ -31,7 +29,7 @@ export async function _fetch<T>(url: string | URL): Promise<T> {
  *
  * @returns Current weather
  */
-export async function getCurrentWeather(
+export async function getCurrent(
   locationName: string,
 ): Promise<CLI.ITimeseriesSimple> {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
@@ -50,7 +48,7 @@ export async function getCurrentWeather(
  *
  * @returns Forecasted weather
  */
-export async function getForecastedWeather(
+export async function getForecast(
   locationName: string,
   interval = 1,
 ): Promise<Forecast> {
@@ -69,19 +67,19 @@ export async function getForecastedWeather(
  *
  * @returns Forecasted weather
  */
-export async function getTomorrowsWeather(
+export async function getTomorrow(
   locationName: string,
 ): Promise<Forecast> {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
-  const filteredResponse = getTomorrowsWeatherResponse(yrResponse);
+  const filteredResponse = getTomorrowResponse(yrResponse);
 
   return await Yr.forecast(filteredResponse, 24);
 }
 
-function getTomorrowsWeatherResponse(input: Yr.IWeather): Yr.IWeather {
+function getTomorrowResponse(input: Yr.IWeather): Yr.IWeather {
   const filteredTimeseries = input.properties.timeseries.filter((item) => {
     const itemDate = new Date(item.time);
     const tomorrow = getDayAfterDate(new Date());

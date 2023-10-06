@@ -1,10 +1,10 @@
 import { Colors } from '../deps.ts';
 import { Options } from './cli.ts';
 import {
-  getCurrentWeather,
-  getForecastedWeather,
+  getCurrent,
+  getForecast,
   getHoursLeftForTheDay,
-  getTomorrowsWeather,
+  getTomorrow,
 } from './util.ts';
 import { WeatherSymbols } from './weather_symbols.ts';
 import { Forecast } from './yr.ts';
@@ -19,7 +19,7 @@ export async function currentMessage(
   { json }: Options,
   name: string,
 ): Promise<void> {
-  const currentWeather = await getCurrentWeather(name);
+  const currentWeather = await getCurrent(name);
   if (json) {
     console.log(JSON.stringify(currentWeather, null, 2));
     return;
@@ -36,7 +36,7 @@ export async function forecastMessage(
   name: string,
   interval = 1,
 ): Promise<void> {
-  const forecast = await getForecastedWeather(name, interval);
+  const forecast = await getForecast(name, interval);
   _forecastMessage({ json }, name, forecast);
 }
 
@@ -73,6 +73,6 @@ export async function tomorrowMessage(
   { json }: Options,
   name: string,
 ): Promise<void> {
-  const forecast = await getTomorrowsWeather(name);
+  const forecast = await getTomorrow(name);
   _forecastMessage({ json }, name, forecast);
 }

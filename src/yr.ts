@@ -1,5 +1,3 @@
-// @deno-types='../mod.d.ts'
-
 import { format as formatDate } from '../deps.ts';
 import { Nominatim } from './nominatim.ts';
 import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
@@ -11,10 +9,10 @@ import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
  * @param verbose Verbosity level
  * @returns Current weather with based on `verbose`-level
  */
-async function getCurrentWeather(
+async function getCurrent(
   weatherData: Yr.IWeather,
 ): Promise<CLI.ITimeseriesSimple> {
-  const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
+  const { units, timeseries, coordinates } = getProperties(
     weatherData,
   );
   const earliestTimeseries: Yr.ITimeseries = getEarliestTimeseries(timeseries);
@@ -35,7 +33,7 @@ interface WeatherDataProps {
   };
 }
 
-function getPropertiesFromWeatherData(
+function getProperties(
   weatherData: Yr.IWeather,
 ): WeatherDataProps {
   return {
@@ -61,11 +59,11 @@ export interface Forecast {
  *
  * @returns Upcoming forecast based on `interval`-level.
  */
-async function getForecastUpcoming(
+async function getForecast(
   weatherData: Yr.IWeather,
   interval: number,
 ): Promise<Forecast> {
-  const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
+  const { units, timeseries, coordinates } = getProperties(
     weatherData,
   );
   const { time: closestTime } = getEarliestTimeseries(timeseries);
@@ -107,7 +105,7 @@ function getSimpleTimeseries(
 }
 
 export const Yr = {
-  current: getCurrentWeather,
-  forecast: getForecastUpcoming,
+  current: getCurrent,
+  forecast: getForecast,
   getUrl,
 };

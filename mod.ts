@@ -5,22 +5,22 @@
  * ## Example for current weather
  *
  * ```ts
- * import { getCurrentWeather } from 'https://deno.land/x/dyr/mod.ts';
+ * import { getCurrent } from 'https://deno.land/x/dyr/mod.ts';
  *
- * const currentWeather = getCurrentWeather('Bergen');
+ * const currentWeather = getCurrent('Bergen');
  * // do what you need to do with the weather data.
  * ```
  *
  * ## Example for forecasted weather
  *
  * ```ts
- * import { getForecastedWeather } from 'https://deno.land/x/dyr/mod.ts';
+ * import { getForecast } from 'https://deno.land/x/dyr/mod.ts';
  *
  * const location = 'Bergen';
  * const hoursAhead = 5;
  * const jsonOutput = true; // The returned response as JSON
  *
- * const currentWeather = getForecastedWeather(location, hoursAhead, jsonOutput);
+ * const currentWeather = getForecast(location, hoursAhead, jsonOutput);
  * ```
  *
  * @module
@@ -28,4 +28,4 @@
 
 export { Nominatim } from './src/nominatim.ts';
 export { Yr } from './src/yr.ts';
-export { getCurrentWeather, getForecastedWeather } from './src/util.ts';
+export { getCurrent, getForecast } from './src/util.ts';
