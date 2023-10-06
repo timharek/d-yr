@@ -16,7 +16,7 @@ const currentCmd = new Command()
   .action(async (options: unknown, name: string) => {
     const currentWeather = await getCurrentWeather(name);
     if (options.json) {
-      console.log(currentWeather);
+      console.log(JSON.stringify(currentWeather, null, 2));
       return;
     }
     console.log(
