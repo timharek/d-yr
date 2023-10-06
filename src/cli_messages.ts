@@ -25,7 +25,7 @@ export async function currentMessage(
     return;
   }
   console.log(
-    `${Colors.bold(Colors.black(Colors.bgBlue(` ${name} now `)))}\n  ${
+    `${Colors.bold(Colors.underline(` ${name} now `))}\n  ${
       parseWeather(currentWeather)
     }`,
   );
