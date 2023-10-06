@@ -20,7 +20,7 @@ import {
 async function getCurrentWeather(
   weatherData: Yr.IWeather,
   jsonOutput = true,
-) {
+): Promise<CLI.ITimeseriesSimple | string> {
   const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
     weatherData,
   );
@@ -41,7 +41,18 @@ async function getCurrentWeather(
   }\n  ${getWeatherMessage(result)}`;
 }
 
-function getPropertiesFromWeatherData(weatherData: Yr.IWeather) {
+interface WeatherDataProps {
+  units: Yr.IUnits;
+  timeseries: Yr.ITimeseries[];
+  coordinates: {
+    lng: number;
+    lat: number;
+  };
+}
+
+function getPropertiesFromWeatherData(
+  weatherData: Yr.IWeather,
+): WeatherDataProps {
   return {
     units: weatherData.properties.meta.units,
     timeseries: weatherData.properties.timeseries,
@@ -65,7 +76,12 @@ async function getForecastUpcoming(
   weatherData: Yr.IWeather,
   interval: number,
   jsonOutput = true,
-) {
+): Promise<
+  CLI.ITimeseriesSimple | string | {
+    location_name: string;
+    array: CLI.ITimeseriesSimple[];
+  }
+> {
   const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
     weatherData,
   );
