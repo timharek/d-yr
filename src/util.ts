@@ -1,7 +1,7 @@
 // @deno-types='../mod.d.ts'
 
 import { Nominatim } from './nominatim.ts';
-import { Yr } from './yr.ts';
+import { Forecast, Yr } from './yr.ts';
 import { Colors } from '../deps.ts';
 import { WeatherSymbols } from './weather_symbols.ts';
 
@@ -11,7 +11,7 @@ import { WeatherSymbols } from './weather_symbols.ts';
  * @param url The URL to send GET-request to
  * @returns Result from GET-request.
  */
-export async function _fetch(url: string | URL) {
+export async function _fetch<T>(url: string | URL): Promise<T> {
   const result = await fetch(url, {
     method: 'GET',
     headers: {
@@ -39,7 +39,7 @@ export async function getCurrentWeather(
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
-  const yrResponse: Yr.IWeather = await _fetch(url);
+  const yrResponse = await _fetch<Yr.IWeather>(url);
 
   return await Yr.current(yrResponse);
 }
@@ -55,14 +55,13 @@ export async function getCurrentWeather(
 export async function getForecastedWeather(
   locationName: string,
   interval = 1,
-  jsonOutput = false,
-) {
+): Promise<Forecast> {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
-  const yrResponse: Yr.IWeather = await _fetch(url);
+  const yrResponse = await _fetch<Yr.IWeather>(url);
 
-  return await Yr.forecast(yrResponse, interval, jsonOutput);
+  return await Yr.forecast(yrResponse, interval);
 }
 
 /**
@@ -74,15 +73,14 @@ export async function getForecastedWeather(
  */
 export async function getTodaysWeather(
   locationName: string,
-  jsonOutput = false,
-) {
+): Promise<Forecast> {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
   const interval = getHoursLeftForTheDay();
 
-  return await Yr.forecast(yrResponse, interval, jsonOutput);
+  return await Yr.forecast(yrResponse, interval);
 }
 
 /**
@@ -94,15 +92,14 @@ export async function getTodaysWeather(
  */
 export async function getTomorrowsWeather(
   locationName: string,
-  jsonOutput = false,
-) {
+): Promise<Forecast> {
   const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);
   const filteredResponse = getTomorrowsWeatherResponse(yrResponse);
 
-  return await Yr.forecast(filteredResponse, 24, jsonOutput);
+  return await Yr.forecast(filteredResponse, 24);
 }
 
 function getTomorrowsWeatherResponse(input: Yr.IWeather): Yr.IWeather {
@@ -132,7 +129,7 @@ export function getDayAfterDate(date: Date): Date {
   return tomorrow;
 }
 
-export function getWeatherMessage(input: CLI.ITimeseriesSimple) {
+export function getWeatherMessage(input: CLI.ITimeseriesSimple): string {
   return `${
     WeatherSymbols[input.symbol]
   }   ${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
@@ -141,7 +138,7 @@ export function getWeatherMessage(input: CLI.ITimeseriesSimple) {
 export function getForecastMessage(
   locationName: string,
   input: CLI.ITimeseriesSimple[],
-) {
+): string {
   const newArray = input.map((item) => {
     return `${
       Colors.bold(Colors.black(Colors.bgBlue(` ${item.datetime} `)))

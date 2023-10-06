@@ -1,14 +1,8 @@
 // @deno-types='../mod.d.ts'
 
-import { Colors, format as formatDate } from '../deps.ts';
+import { format as formatDate } from '../deps.ts';
 import { Nominatim } from './nominatim.ts';
-import {
-  cleanForecast,
-  getEarliestTimeseries,
-  getForecastMessage,
-  getUrl,
-  getWeatherMessage,
-} from './util.ts';
+import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
 
 /**
  * Get the current weather as the hour closest from the time the request occured.
@@ -54,6 +48,10 @@ function getPropertiesFromWeatherData(
   };
 }
 
+export interface Forecast {
+  location_name: string;
+  array: CLI.ITimeseriesSimple[];
+}
 /**
  * Get current upcoming forecast.
  *
@@ -66,13 +64,7 @@ function getPropertiesFromWeatherData(
 async function getForecastUpcoming(
   weatherData: Yr.IWeather,
   interval: number,
-  jsonOutput = true,
-): Promise<
-  CLI.ITimeseriesSimple | string | {
-    location_name: string;
-    array: CLI.ITimeseriesSimple[];
-  }
-> {
+): Promise<Forecast> {
   const { units, timeseries, coordinates } = getPropertiesFromWeatherData(
     weatherData,
   );
@@ -90,14 +82,10 @@ async function getForecastUpcoming(
     ? cleanForecast(resultArray).slice(0, interval)
     : cleanForecast(resultArray);
 
-  if (jsonOutput) {
-    return {
-      location_name,
-      array,
-    };
-  }
-
-  return getForecastMessage(location_name, array);
+  return {
+    location_name,
+    array,
+  };
 }
 
 function getSimpleTimeseries(
@@ -115,7 +103,7 @@ function getSimpleTimeseries(
     }`,
     rain:
       `${nextHour.details.precipitation_amount} ${units.precipitation_amount}`,
-  } as CLI.ITimeseriesSimple;
+  };
 }
 
 export const Yr = {
