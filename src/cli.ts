@@ -1,4 +1,4 @@
-import { Command } from '../deps.ts';
+import { Command, CompletionsCommand } from '../deps.ts';
 import {
   currentMessage,
   forecastMessage,
@@ -46,4 +46,5 @@ await new Command()
   )
   .command('today <name:string>', todayCmd)
   .command('tomorrow <name:string>', tomorrowCmd)
+  .command('completions', new CompletionsCommand())
   .parse(Deno.args);
