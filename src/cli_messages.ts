@@ -10,9 +10,18 @@ import { WeatherSymbols } from './weather_symbols.ts';
 import { Forecast, TimeseriesMinified } from './yr.ts';
 
 function parseWeather(input: TimeseriesMinified): string {
-  return `${
-    WeatherSymbols[input.symbol]
-  }   ${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
+  const details = [];
+
+  if (parseFloat(input.wind_speed) > 0) {
+    details.push(`${input.wind_speed} wind`);
+  }
+  if (parseFloat(input.rain) > 0) {
+    details.push(`${input.rain} rain`);
+  }
+
+  return `${WeatherSymbols[input.symbol]}   ${input.temperature} with ${
+    details.join(', ')
+  }.`;
 }
 
 function messageHeader(heading: string): string {
