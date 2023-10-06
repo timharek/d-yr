@@ -1,62 +1,32 @@
-// @deno-types='../mod.d.ts'
-
-import { Colors } from '../deps.ts';
 import { Command } from '../deps.ts';
 import {
-  _fetch,
-  getCurrentWeather,
-  getForecastedWeather,
-  getTodaysWeather,
-  getTomorrowsWeather,
-  getWeatherMessage,
-} from './util.ts';
+  currentMessage,
+  forecastMessage,
+  todayMessage,
+  tomorrowMessage,
+} from './cli_messages.ts';
+import { _fetch } from './util.ts';
 
-interface Options {
+export interface Options {
   json?: boolean;
   debug?: boolean;
 }
 
 const currentCmd = new Command()
   .description('Return current weather.')
-  .action(async ({ json }: Options, name: string) => {
-    const currentWeather = await getCurrentWeather(name);
-    if (json) {
-      console.log(JSON.stringify(currentWeather, null, 2));
-      return;
-    }
-    console.log(
-      `${Colors.bold(Colors.black(Colors.bgBlue(` ${name} now `)))}\n  ${
-        getWeatherMessage(currentWeather)
-      }`,
-    );
-  });
+  .action(currentMessage);
 
 const forecastCmd = new Command()
   .description('Return forecast.')
-  .action(async ({ json }: Options, name: string, interval = 1) => {
-    // TODO: Add message format for non-JSON result
-    console.log(
-      await getForecastedWeather(name, interval),
-    );
-  });
+  .action(forecastMessage);
 
 const todayCmd = new Command()
   .description('Return today\'s forecast.')
-  .action(async ({ json }: Options, name: string) => {
-    // TODO: Add message format for non-JSON result
-    console.log(
-      await getTodaysWeather(name),
-    );
-  });
+  .action(todayMessage);
 
 const tomorrowCmd = new Command()
   .description('Return tomorrow\'s forecast.')
-  .action(async ({ json }: Options, name: string) => {
-    // TODO: Add message format for non-JSON result
-    console.log(
-      await getTomorrowsWeather(name),
-    );
-  });
+  .action(tomorrowMessage);
 
 await new Command()
   .name('yr')

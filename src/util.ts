@@ -2,8 +2,6 @@
 
 import { Nominatim } from './nominatim.ts';
 import { Forecast, Yr } from './yr.ts';
-import { Colors } from '../deps.ts';
-import { WeatherSymbols } from './weather_symbols.ts';
 
 /**
  * Shared fetch-function for simple GET-requests.
@@ -65,25 +63,6 @@ export async function getForecastedWeather(
 }
 
 /**
- * Get today's weather.
- *
- * @param locationName Name of the location, can be village, city etc.
- *
- * @returns Forecasted weather
- */
-export async function getTodaysWeather(
-  locationName: string,
-): Promise<Forecast> {
-  const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
-  const url = Yr.getUrl(lat, lng);
-
-  const yrResponse: Yr.IWeather = await _fetch(url);
-  const interval = getHoursLeftForTheDay();
-
-  return await Yr.forecast(yrResponse, interval);
-}
-
-/**
  * Get tomorrow's weather.
  *
  * @param locationName Name of the location, can be village, city etc.
@@ -127,28 +106,6 @@ export function getHoursLeftForTheDay(): number {
 export function getDayAfterDate(date: Date): Date {
   const tomorrow = new Date(date.setHours(25, 0, 0, 0));
   return tomorrow;
-}
-
-export function getWeatherMessage(input: CLI.ITimeseriesSimple): string {
-  return `${
-    WeatherSymbols[input.symbol]
-  }   ${input.temperature} with ${input.wind_speed} wind and ${input.rain} rain.`;
-}
-
-export function getForecastMessage(
-  locationName: string,
-  input: CLI.ITimeseriesSimple[],
-): string {
-  const newArray = input.map((item) => {
-    return `${
-      Colors.bold(Colors.black(Colors.bgBlue(` ${item.datetime} `)))
-    }\n  ${getWeatherMessage(item)}\n`;
-  });
-  return `${
-    Colors.underline(
-      `Forecast in ${locationName} for next ${newArray.length} hours`,
-    )
-  }\n\n${newArray.join('\n')}`;
 }
 
 /**
