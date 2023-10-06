@@ -11,11 +11,16 @@ import {
   getWeatherMessage,
 } from './util.ts';
 
+interface Options {
+  json?: boolean;
+  debug?: boolean;
+}
+
 const currentCmd = new Command()
   .description('Return current weather.')
-  .action(async (options: unknown, name: string) => {
+  .action(async ({ json }: Options, name: string) => {
     const currentWeather = await getCurrentWeather(name);
-    if (options.json) {
+    if (json) {
       console.log(JSON.stringify(currentWeather, null, 2));
       return;
     }
@@ -28,7 +33,7 @@ const currentCmd = new Command()
 
 const forecastCmd = new Command()
   .description('Return forecast.')
-  .action(async (options: unknown, name: string, interval = 1) => {
+  .action(async ({ json }: Options, name: string, interval = 1) => {
     // TODO: Add message format for non-JSON result
     console.log(
       await getForecastedWeather(name, interval),
@@ -37,7 +42,7 @@ const forecastCmd = new Command()
 
 const todayCmd = new Command()
   .description('Return today\'s forecast.')
-  .action(async (options: unknown, name: string) => {
+  .action(async ({ json }: Options, name: string) => {
     // TODO: Add message format for non-JSON result
     console.log(
       await getTodaysWeather(name),
@@ -46,7 +51,7 @@ const todayCmd = new Command()
 
 const tomorrowCmd = new Command()
   .description('Return tomorrow\'s forecast.')
-  .action(async (options: unknown, name: string) => {
+  .action(async ({ json }: Options, name: string) => {
     // TODO: Add message format for non-JSON result
     console.log(
       await getTomorrowsWeather(name),
