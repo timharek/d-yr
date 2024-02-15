@@ -1,4 +1,7 @@
 {
+  "name": "@timharek/d-yr",
+  "version": "2.0.1",
+  "exports": "./mod.ts",
   "tasks": {
     "run": "deno run --allow-net=api.met.no,nominatim.openstreetmap.org src/cli.ts"
   },
