@@ -20,16 +20,16 @@ const forecastCmd = new Command()
   .action(forecastMessage);
 
 const todayCmd = new Command()
-  .description('Return today\'s forecast.')
+  .description("Return today's forecast.")
   .action(todayMessage);
 
 const tomorrowCmd = new Command()
-  .description('Return tomorrow\'s forecast.')
+  .description("Return tomorrow's forecast.")
   .action(tomorrowMessage);
 
 await new Command()
   .name('yr')
-  .version('v1.5.0')
+  .version('v2.0.1')
   .description('Get weather data from Yr using Deno.')
   .meta('Author', 'Tim Hårek Andreassen <tim@harek.no>')
   .meta('Source', 'https://deno.land/x/dyr')
