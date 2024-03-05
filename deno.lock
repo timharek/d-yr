@@ -1,5 +1,21 @@
 {
   "version": "3",
+  "packages": {
+    "specifiers": {
+      "jsr:@std/datetime@0.215": "jsr:@std/datetime@0.215.0",
+      "jsr:@std/datetime@^0.218.2": "jsr:@std/datetime@0.218.2",
+      "jsr:@std/fmt@0.215": "jsr:@std/fmt@0.215.0",
+      "jsr:@std/fmt@^0.218.2": "jsr:@std/fmt@0.218.2"
+    },
+    "jsr": {
+      "@std/datetime@0.218.2": {
+        "integrity": "6279f219fd2db40891f804d0f6d2802ddc2e76afe85e938bea897b6723f4c242"
+      },
+      "@std/fmt@0.218.2": {
+        "integrity": "99526449d2505aa758b6cbef81e7dd471d8b28ec0dcb1491d122b284c548788a"
+      }
+    }
+  },
   "remote": {
     "https://deno.land/std@0.128.0/datetime/formatter.ts": "7c8e6d16a0950f400aef41b9f1eb9168249869776ec520265dfda785d746589e",
     "https://deno.land/std@0.128.0/datetime/mod.ts": "27aae0c61818132e61f02bbce8418e938a974694dc08e791301e374cc00822c2",
@@ -263,11 +279,27 @@
     "https://deno.land/x/cliffy@v1.0.0-rc.3/table/row.ts": "79eb1468aafdd951e5963898cdafe0752d4ab4c519d5f847f3d8ecb8fe857d4f",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/table/table.ts": "298671e72e61f1ab18b42ae36643181993f79e29b39dc411fdc6ffd53aa04684",
     "https://deno.land/x/deno_cli_help@1.0.1/mod.ts": "c448abcf89d46e8ba2cd9912c8a8f40e9d6d497b8208f4ccf418f27a3009c24e",
+    "https://jsr.io/@std/datetime/0.215.0/_common.ts": "a62214c1924766e008e27d3d843ceba4b545dc2aa9880de0ecdef9966d5736b6",
+    "https://jsr.io/@std/datetime/0.215.0/constants.ts": "63b60d85e340b9e7abdea0bfa4402612c21a246e4a3ed0677849139730781c1c",
+    "https://jsr.io/@std/datetime/0.215.0/day_of_year.ts": "01fe89a7ab4befa9adf7d6b0331ec4f2bd1b82ac5203ead9e97b9a4153f8af10",
+    "https://jsr.io/@std/datetime/0.215.0/difference.ts": "0e5c1d1ec59c91f9ce17177f98370cb9306afacbfc0cb157aecde2ab5ec20b5c",
+    "https://jsr.io/@std/datetime/0.215.0/format.ts": "43587ac37ba0245797334cbfd70b513368e6d2133cba0555afe66711e76c9c16",
+    "https://jsr.io/@std/datetime/0.215.0/is_leap.ts": "5a42103d808ed92d816347a1052d95ea66340db64b8ff0f0d1633cd46238e748",
+    "https://jsr.io/@std/datetime/0.215.0/mod.ts": "e191e5498662322024f21e29875cb4d6c5a9bf55e54d571b144c17678b069044",
+    "https://jsr.io/@std/datetime/0.215.0/parse.ts": "661c0d01f70fabb97b677b183a1a4fd9806ccaac2c1344d6bc0217c2771337ba",
+    "https://jsr.io/@std/datetime/0.215.0/week_of_year.ts": "d42b34073c091594a4669818596380eab17ce84b6b48bdfcfbf663fc1e7abec4",
+    "https://jsr.io/@std/fmt/0.215.0/colors.ts": "59b5de7c07cdc0322ed61b2d98da1ca4fbc9f576d45c2beee577a27556e52d63",
     "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/deps.ts": "ece006fe6d3c89050e7d053f207f31f6c23f5c8febadd9c7c826a3462583e717",
     "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/mod.d.ts": "46808ef269c94f4707b28ff20077f65cc5ee3e19131794b8e8382cbd01858e76",
     "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/mod.ts": "9669a26a6bb3d17882c97a37f6867844813519a9067b6179375b5fcc7c45e4bc",
     "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/src/config.ts": "cccd1fcac5ba0a33879c8512515f58904e653e4b4cc23164be6f6dd5903c1990",
     "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/src/nominatim.ts": "29e17b2e286daee3d6d1f89fe86362e563d53ec1d1f1bb2c32f8a3941bc9ac73",
     "https://raw.githubusercontent.com/timharek/d-yr/v1.2.0/src/yr.ts": "3fb577576875f2f1aaa027c65d6b2fcb413749b4cc97f9ba86139ae5c4202edc"
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@std/datetime@^0.218.2",
+      "jsr:@std/fmt@^0.218.2"
+    ]
   }
 }

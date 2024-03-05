@@ -1,6 +1,5 @@
-export { format } from 'https://deno.land/std@0.203.0/datetime/mod.ts';
-export { parse } from 'https://deno.land/std@0.203.0/flags/mod.ts';
-export * as Colors from 'https://deno.land/std@0.203.0/fmt/colors.ts';
+export { format } from '@std/datetime';
+export * as Colors from '@std/fmt/colors';
 export {
   Command,
   CompletionsCommand,
