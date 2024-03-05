@@ -30,5 +30,3 @@ tasks:
         if [ "$(git describe --exact-match --tags HEAD)" ]; then \
           git push --tags github; \
         fi
-
-
