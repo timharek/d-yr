@@ -1,29 +1,32 @@
-image: ubuntu/lts
+image: alpine/edge
 packages:
-    - unzip
+  - deno
 secrets:
   - 0323bc6f-a046-4b96-8496-2bac6e7ee107
+  - 6a295705-4fb6-451c-990c-9a12b0aa0dc2
 environment:
-  DIR: d-yr
+  dir: d-yr
 triggers:
   - action: email
     condition: failure
     to: tim@harek.no
 tasks:
-    - install-deno: |
-        curl -fsSL https://deno.land/x/install/install.sh | sh
     - test: |
-        DENO_INSTALL="/home/build/.deno"
-        PATH="$DENO_INSTALL/bin:$PATH"
-        cd $DIR
+        cd $dir
         deno test
     - check: |
-        cd $DIR
+        cd $dir
         if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
           complete-build; \
         fi
+    - new_release: |
+        set +x
+        export JSR_API=$(cat ~/jsr_timharek)
+        cd $dir
+        deno publish --allow-slow-types --token $JSR_API
+        set -x
     - mirror: |
-        cd $DIR
+        cd $dir
         git remote add github git@github.com:timharek/d-yr.git
         ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
         git push github main
