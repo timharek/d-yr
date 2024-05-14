@@ -1,6 +1,5 @@
 /**
- * Access Yr's weather API and Nominatim's names API for getting weather details
- * about a specific location.
+ * Access Yr's weather API for getting weather forecast about a specific location.
  *
  * ## Example for current weather
  *
@@ -25,6 +24,5 @@
  * @module
  */
 
-export { Nominatim } from './src/nominatim.ts';
 export { Yr } from './src/yr.ts';
 export { getCurrent, getForecast } from './src/util.ts';

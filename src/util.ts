@@ -1,4 +1,4 @@
-import { Nominatim } from './nominatim.ts';
+import { coordinatesFromLocationName } from '../deps.ts';
 import { Forecast, TimeseriesMinified, Yr } from './yr.ts';
 
 /**
@@ -32,7 +32,7 @@ export async function _fetch<T>(url: string | URL): Promise<T> {
 export async function getCurrent(
   locationName: string,
 ): Promise<TimeseriesMinified> {
-  const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
+  const { lat, lng } = await coordinatesFromLocationName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse = await _fetch<Yr.IWeather>(url);
@@ -52,7 +52,7 @@ export async function getForecast(
   locationName: string,
   interval = 1,
 ): Promise<Forecast> {
-  const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
+  const { lat, lng } = await coordinatesFromLocationName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse = await _fetch<Yr.IWeather>(url);
@@ -70,7 +70,7 @@ export async function getForecast(
 export async function getTomorrow(
   locationName: string,
 ): Promise<Forecast> {
-  const { lat, lng } = await Nominatim.getCoordinatesFromName(locationName);
+  const { lat, lng } = await coordinatesFromLocationName(locationName);
   const url = Yr.getUrl(lat, lng);
 
   const yrResponse: Yr.IWeather = await _fetch(url);

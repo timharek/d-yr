@@ -12,7 +12,8 @@
       "jsr:@std/fmt@0.215": "jsr:@std/fmt@0.215.0",
       "jsr:@std/fmt@0.221": "jsr:@std/fmt@0.221.0",
       "jsr:@std/fmt@^0.218.2": "jsr:@std/fmt@0.218.2",
-      "jsr:@std/text@0.221": "jsr:@std/text@0.221.0"
+      "jsr:@std/text@0.221": "jsr:@std/text@0.221.0",
+      "jsr:@timharek/nominatim@1.0.0": "jsr:@timharek/nominatim@1.0.0"
     },
     "jsr": {
       "@cliffy/command@1.0.0-rc.4": {
@@ -53,6 +54,9 @@
         "dependencies": [
           "jsr:@std/assert@^0.221.0"
         ]
+      },
+      "@timharek/nominatim@1.0.0": {
+        "integrity": "75064090f20353e6b999a501bf3ad88b2052b2f90c4d7e2b50a3dcb54702d08c"
       }
     }
   },

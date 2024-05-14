@@ -1,5 +1,4 @@
-import { format as formatDate } from '../deps.ts';
-import { Nominatim } from './nominatim.ts';
+import { format as formatDate, locationFromCoordinates } from '../deps.ts';
 import { cleanForecast, getEarliestTimeseries, getUrl } from './util.ts';
 
 export interface TimeseriesMinified {
@@ -26,10 +25,11 @@ async function getCurrent(
     weatherData,
   );
   const earliestTimeseries: Yr.ITimeseries = getEarliestTimeseries(timeseries);
-  const location_name = await Nominatim.getNameFromCoordinates(coordinates);
+  const location = await locationFromCoordinates(coordinates);
+  const locationName = location?.city ?? location?.village;
 
   return {
-    location_name,
+    location_name: locationName,
     ...getSimpleTimeseries(earliestTimeseries, units),
   } as TimeseriesMinified;
 }
@@ -77,7 +77,8 @@ async function getForecast(
     weatherData,
   );
   const { time: closestTime } = getEarliestTimeseries(timeseries);
-  const location_name = await Nominatim.getNameFromCoordinates(coordinates);
+  const location = await locationFromCoordinates(coordinates);
+  const locationName = location?.city ?? location?.village;
 
   const resultArray = weatherData.properties.timeseries.map((entry) => {
     const { data: { next_1_hours: nextHour }, time } = entry;
@@ -91,7 +92,7 @@ async function getForecast(
     : cleanForecast(resultArray);
 
   return {
-    location_name,
+    location_name: locationName ?? '',
     array,
   };
 }
