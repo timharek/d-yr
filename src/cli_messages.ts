@@ -1,5 +1,5 @@
 import { Colors } from '../deps.ts';
-import { Options } from './cli.ts';
+import { GlobalOptions } from './cli.ts';
 import {
   getCurrent,
   getForecast,
@@ -29,7 +29,7 @@ function messageHeader(heading: string): string {
 }
 
 export async function currentMessage(
-  { json }: Options,
+  { json }: GlobalOptions,
   name: string,
 ): Promise<void> {
   const currentWeather = await getCurrent(name);
@@ -43,7 +43,7 @@ export async function currentMessage(
 }
 
 export async function forecastMessage(
-  { json }: Options,
+  { json }: GlobalOptions,
   name: string,
   interval = 1,
 ): Promise<void> {
@@ -52,7 +52,7 @@ export async function forecastMessage(
 }
 
 function _forecastMessage(
-  { json }: Options,
+  { json }: GlobalOptions,
   name: string,
   forecast: Forecast,
 ): void {
@@ -71,7 +71,7 @@ function _forecastMessage(
 }
 
 export async function todayMessage(
-  { json }: Options,
+  { json }: GlobalOptions,
   name: string,
 ): Promise<void> {
   const interval = getHoursLeftForTheDay();
@@ -79,7 +79,7 @@ export async function todayMessage(
 }
 
 export async function tomorrowMessage(
-  { json }: Options,
+  { json }: GlobalOptions,
   name: string,
 ): Promise<void> {
   const forecast = await getTomorrow(name);

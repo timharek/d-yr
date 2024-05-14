@@ -1,6 +1,3 @@
-export { format } from '@std/datetime';
-export * as Colors from '@std/fmt/colors';
-export {
-  Command,
-  CompletionsCommand,
-} from 'https://deno.land/x/cliffy@v1.0.0-rc.3/command/mod.ts';
+export { format } from 'jsr:@std/datetime@^0.218.2';
+export * as Colors from 'jsr:@std/fmt@^0.218.2/colors';
+export { Command, CompletionsCommand } from 'jsr:@cliffy/command@1.0.0-rc.4';
