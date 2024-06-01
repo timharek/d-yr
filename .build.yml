@@ -5,31 +5,24 @@ secrets:
   - 0323bc6f-a046-4b96-8496-2bac6e7ee107
   - 6a295705-4fb6-451c-990c-9a12b0aa0dc2
 environment:
-  dir: d-yr
+  GIT_SSH_COMMAND: ssh -o StrictHostKeyChecking=no
 triggers:
   - action: email
     condition: failure
     to: tim@harek.no
 tasks:
-    - test: |
-        cd $dir
-        deno test
-    - check: |
-        cd $dir
-        if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
-          complete-build; \
-        fi
-    - new_release: |
-        set +x
-        export JSR_API=$(cat ~/jsr_timharek)
-        cd $dir
-        deno publish --allow-slow-types --token $JSR_API
-        set -x
-    - mirror: |
-        cd $dir
-        git remote add github git@github.com:timharek/d-yr.git
-        ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-        git push github main
-        if [ "$(git describe --exact-match --tags HEAD)" ]; then \
-          git push --tags github; \
-        fi
+  - setup: |
+      echo 'cd d-yr' >> ~/.buildenv
+  - test: |
+      deno test
+  - check: |
+      if [ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]; then \
+        complete-build; \
+      fi
+  - mirror: |
+      git push --force --mirror git@github.com:timharek/d-yr.git
+  - new_release: |
+      set +x
+      export JSR_API=$(cat ~/jsr_timharek)
+      deno publish --allow-slow-types --token $JSR_API
+      set -x
